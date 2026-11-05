@@ -421,6 +421,18 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Apply Windows Escape-to-stop patch
+        shell: pwsh
+        run: |
+          git apply --check .github/patches/esc-stop.patch
+          if ($LASTEXITCODE -ne 0) {
+            throw 'Windows Escape patch is incompatible with this checkout.'
+          }
+          git apply .github/patches/esc-stop.patch
+          if ($LASTEXITCODE -ne 0) {
+            throw 'Failed to apply the Windows Escape patch.'
+          }
+
       - name: Cache Windows native dependencies
         id: windows-native-cache
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
@@ -461,7 +473,12 @@ jobs:
 
       - name: Build Windows ${{ matrix.arch }}
         shell: pwsh
-        run: flutter build windows --release ${{ env.RELEASE_DART_DEFINES }} --dart-define=SENTRY_DIST=github-windows-${{ matrix.arch }} --dart-define=SUPPORTER_MODE=msstore --split-debug-info=debug-info/windows-${{ matrix.arch }}
+        run: |
+          $releaseDefines = @($env:RELEASE_DART_DEFINES -split ' ')
+          if ($env:GITHUB_REPOSITORY -ne 'edde746/plezy') {
+            $releaseDefines = $releaseDefines -replace '--dart-define=ENABLE_UPDATE_CHECK=true', '--dart-define=ENABLE_UPDATE_CHECK=false'
+          }
+          flutter build windows --release @releaseDefines --dart-define=SENTRY_DIST=github-windows-${{ matrix.arch }} --dart-define=SUPPORTER_MODE=msstore --split-debug-info=debug-info/windows-${{ matrix.arch }}
 
       - name: Verify Windows bundle contents
         shell: pwsh

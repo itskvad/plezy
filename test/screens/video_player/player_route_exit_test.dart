@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -105,6 +106,22 @@ void main() {
     }
   });
 
+  testWidgets('Windows Escape stops playback and exits in one press', (tester) async {
+    if (!Platform.isWindows) return;
+
+    final player = _TouchExitPlayer();
+    final screen = await _pushHeldPlayer(tester, player);
+    await tester.sendKeyDownEvent(LogicalKeyboardKey.escape);
+    await tester.pump();
+    await tester.sendKeyUpEvent(LogicalKeyboardKey.escape);
+    await tester.pump(const Duration(seconds: 1));
+    await tester.pump();
+
+    expect(screen.key.currentState, isNull);
+    expect(find.text('Browse'), findsOneWidget);
+    expect(player.stopCalls, 1);
+    expect(player.pauseCalls, 0);
+  });
   // A route pushed onto the player's own navigator inside the exit grace
   // period must not fence the accepted exit: the player leaves by identity
   // and the covering route stays put (#2290).
@@ -137,9 +154,15 @@ class _TouchExitPlayer extends FakeSyncPlayer {
 
   final pauseGate = Completer<void>();
   int pauseCalls = 0;
+  int stopCalls = 0;
 
   @override
   Future<void> abandonAudioFocus() async {}
+
+  @override
+  Future<void> stop() async {
+    stopCalls++;
+  }
 
   @override
   Future<void> pause() async {
