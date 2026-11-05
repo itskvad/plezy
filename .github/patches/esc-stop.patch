@@ -2,7 +2,10 @@ diff --git a/lib/screens/video_player_screen.dart b/lib/screens/video_player_scr
 index 28c0956b2..262d082c3 100644
 --- a/lib/screens/video_player_screen.dart
 +++ b/lib/screens/video_player_screen.dart
-@@ -2383,0 +2384,15 @@ class VideoPlayerScreenState extends State<VideoPlayerScreen>
+@@ -2381,6 +2381,21 @@ class VideoPlayerScreenState extends State<VideoPlayerScreen>
+         return;
+       }
+     }
 +
 +    // A Windows Escape is an immediate playback exit. Let player prompts keep
 +    // their normal dismiss/back behavior before bypassing fullscreen and chrome.
@@ -18,13 +21,22 @@ index 28c0956b2..262d082c3 100644
 +      return;
 +    }
 +
+     _playerNavigationCoordinator.handle(navigationKey);
+   }
+ 
 diff --git a/lib/widgets/video_controls/parts/key_events.dart b/lib/widgets/video_controls/parts/key_events.dart
 index b0afe3864..55a2383d7 100644
 --- a/lib/widgets/video_controls/parts/key_events.dart
 +++ b/lib/widgets/video_controls/parts/key_events.dart
-@@ -94,0 +95,5 @@ extension _PlexVideoControlsKeyEventMethods on _PlexVideoControlsState {
+@@ -92,6 +92,11 @@ extension _PlexVideoControlsKeyEventMethods on _PlexVideoControlsState {
+       return handlePlayerNavigationKeyAction(event, navigationKey, sheetController!.pop);
+     }
+ 
 +    // Windows physical Escape is handled by the screen so it can stop playback
 +    // without stepping through player chrome. Sheets above still dismiss first.
 +    if (Platform.isWindows && navigationKey == PlayerNavigationKey.physicalEscape) {
 +      return KeyEventResult.ignored;
 +    }
+     if (widget.chromeController.contentStripVisible) {
+       return handlePlayerNavigationKeyAction(event, navigationKey, () {
+         _desktopControlsKey.currentState?.dismissContentStrip();

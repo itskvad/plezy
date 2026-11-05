@@ -15,3 +15,4 @@ packages/wakelock_plus/pigeons/messages.dart text eol=lf
 packages/wakelock_plus/android/src/main/kotlin/dev/fluttercommunity/plus/wakelock/WakelockPlusMessages.g.kt text eol=lf
 packages/wakelock_plus/ios/wakelock_plus/Sources/wakelock_plus/include/wakelock_plus/messages.g.h text eol=lf
 packages/wakelock_plus/ios/wakelock_plus/Sources/wakelock_plus/messages.g.m text eol=lf
+.github/patches/*.patch text eol=lf
