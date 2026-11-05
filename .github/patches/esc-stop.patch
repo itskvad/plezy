@@ -1,0 +1,30 @@
+diff --git a/lib/screens/video_player_screen.dart b/lib/screens/video_player_screen.dart
+index 28c0956b2..262d082c3 100644
+--- a/lib/screens/video_player_screen.dart
++++ b/lib/screens/video_player_screen.dart
+@@ -2383,0 +2384,15 @@ class VideoPlayerScreenState extends State<VideoPlayerScreen>
++
++    // A Windows Escape is an immediate playback exit. Let player prompts keep
++    // their normal dismiss/back behavior before bypassing fullscreen and chrome.
++    if (Platform.isWindows && navigationKey == PlayerNavigationKey.physicalEscape) {
++      if (_episode.showPlayNextDialog || _showStillWatchingPrompt) {
++        _playerNavigationCoordinator.handle(navigationKey);
++        return;
++      }
++      // Windows Escape closes the player route but leaves the app window's
++      // fullscreen state alone, regardless of the normal close preference.
++      _exitFullscreenOnPlayerClose = false;
++      unawaited(_exitPlayerRoute(navigateHome: false, stop: true));
++      return;
++    }
++
+diff --git a/lib/widgets/video_controls/parts/key_events.dart b/lib/widgets/video_controls/parts/key_events.dart
+index b0afe3864..55a2383d7 100644
+--- a/lib/widgets/video_controls/parts/key_events.dart
++++ b/lib/widgets/video_controls/parts/key_events.dart
+@@ -94,0 +95,5 @@ extension _PlexVideoControlsKeyEventMethods on _PlexVideoControlsState {
++    // Windows physical Escape is handled by the screen so it can stop playback
++    // without stepping through player chrome. Sheets above still dismiss first.
++    if (Platform.isWindows && navigationKey == PlayerNavigationKey.physicalEscape) {
++      return KeyEventResult.ignored;
++    }
