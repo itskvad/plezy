@@ -44,7 +44,11 @@ class ConnectionBootstrap {
   /// Run all idempotent boot-time migrations. Best-effort — errors are
   /// logged but never thrown.
   Future<void> run() async {
-    final seededDevAccount = await seedFromDevTokenDefine();
+    // Check the compile-time define first: the normal build has no dev token,
+    // and [seedFromDevTokenDefine] would otherwise read the connection table on
+    // every boot just to return false.
+    const hasDevTokenDefine = String.fromEnvironment('PLEX_TOKEN') != '';
+    final seededDevAccount = hasDevTokenDefine && await seedFromDevTokenDefine();
     final hadLegacyPlexToken = (storage.getPlexToken() ?? '').isNotEmpty;
     final hadLegacyProfileState = _hasLegacyProfileState();
     final alreadyMigrated = storage.prefs.getBool(_keyProfileMigrationV1Done) ?? false;
@@ -53,9 +57,10 @@ class ConnectionBootstrap {
     // were pure no-op work on the startup path. Any legacy state (or a dev
     // seed) still falls through to the full migration pass below.
     if (alreadyMigrated && !hadLegacyPlexToken && !hadLegacyProfileState && !seededDevAccount) {
-      // Still drop a legacy server list left behind by an old install; the
-      // remove is a cheap pref delete and the rest of the pass is skipped.
-      await storage.clearServersList();
+      // Still drop a legacy server list left behind by an old install, but
+      // only when something is actually there: an unconditional remove is a
+      // platform-store write on every boot.
+      if (storage.getServersListJson() != null) await storage.clearServersList();
       return;
     }
     final migratedAccount = await migrateLegacyPlexAccount();

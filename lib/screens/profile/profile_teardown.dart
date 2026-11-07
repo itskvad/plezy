@@ -209,6 +209,8 @@ Future<void> deleteProfile(BuildContext context, Profile profile) async {
     await scope.profileRegistry.remove(profile.id);
     await scope.storage.clearProfileLastUsed(profile.id);
     await scope.storage.clearUserScopedPreferencesForProfile(profile.id);
+    // The profile id is gone for good; don't keep its home snapshot on disk.
+    await DiscoverHomeCache().clear(profile.id);
 
     await settleSessionAfterRemoval(scope, endedShelfOwner: endedOwner);
   });
@@ -315,6 +317,7 @@ Future<bool> confirmAndSignOutPlexAccount(BuildContext context, {required String
         await scope.database.deleteDownloadCollectionsForProfile(profileId);
         await scope.database.deleteWatchActionsForProfile(profileId);
         await scope.database.deleteMusicSessionForProfile(profileId);
+        await DiscoverHomeCache().clear(profileId);
       }
 
       return settleSessionAfterRemoval(scope, rebindIfActiveKept: true, endedShelfOwner: endedOwner);

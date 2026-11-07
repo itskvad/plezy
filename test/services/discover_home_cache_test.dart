@@ -55,4 +55,27 @@ void main() {
     expect(restored.hasMoreContinueWatching, isFalse);
     expect(await cache.read('local user/2'), isNull);
   });
+
+  test('clearAll invalidates writes queued by pre-logout cache instances', () async {
+    final directory = await Directory.systemTemp.createTemp('plezy-discover-cache-clear');
+    addTearDown(() => directory.delete(recursive: true));
+    final snapshot = DiscoverHomeSnapshot(
+      onDeck: const [],
+      copies: const {},
+      hubs: const [MediaHub(id: 'home.recent', title: 'Stale', type: 'movie', items: [])],
+      hasMoreContinueWatching: false,
+      savedAt: DateTime.utc(2026, 1, 2, 3, 4, 5),
+    );
+
+    final beforeLogout = DiscoverHomeCache(directoryProvider: () async => directory);
+    await DiscoverHomeCache(directoryProvider: () async => directory).clearAll();
+
+    // A session that outlives the logout must not recreate the deleted file.
+    await beforeLogout.write('profile-a', snapshot);
+    expect(await beforeLogout.read('profile-a'), isNull);
+
+    final afterLogout = DiscoverHomeCache(directoryProvider: () async => directory);
+    await afterLogout.write('profile-a', snapshot);
+    expect(await afterLogout.read('profile-a'), isNotNull);
+  });
 }

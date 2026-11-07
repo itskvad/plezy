@@ -673,7 +673,8 @@ class DiscoverProvider extends ChangeNotifier with DisposableChangeNotifierMixin
     final cache = _homeCache;
     final owner = profileId;
     if (cache == null || owner == null || owner.isEmpty || isDisposed || isProfileBinding()) return;
-    if (_onDeck.isEmpty && _hubs.isEmpty) return;
+    // Persist even an empty committed home: otherwise a home that used to have
+    // content but is now empty would resurrect the old snapshot next launch.
     try {
       await cache.write(
         owner,

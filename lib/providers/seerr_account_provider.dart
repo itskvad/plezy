@@ -103,13 +103,15 @@ class SeerrAccountProvider extends ChangeNotifier with DisposableChangeNotifierM
     if (!_isCurrentBinding(userUuid, generation)) return;
     final loaded = await _store.load(userUuid);
     _setSessionAndRebind(userUuid, generation, loaded);
-    if (_isCurrentBinding(userUuid, generation)) unawaited(_refreshUserAfterStartup());
+    if (_isCurrentBinding(userUuid, generation)) {
+      unawaited(_refreshUserAfterStartup(userUuid, generation));
+    }
   }
 
   /// Defers the permission/display-name refresh until the app has finished
   /// its startup work. The stored session is already usable (and the client
   /// already bound), so this is a background reconciliation, not a gate.
-  Future<void> _refreshUserAfterStartup() async {
+  Future<void> _refreshUserAfterStartup(String userUuid, int generation) async {
     final ready = _startupReady;
     if (ready != null) {
       try {
@@ -118,7 +120,9 @@ class SeerrAccountProvider extends ChangeNotifier with DisposableChangeNotifierM
         appLogger.d('Seerr: startup readiness wait failed', error: e, stackTrace: st);
       }
     }
-    if (isDisposed) return;
+    // A profile switch while the startup gate was pending re-binds the client;
+    // the new bind schedules its own refresh.
+    if (!_isCurrentBinding(userUuid, generation)) return;
     await refreshUser();
   }
 

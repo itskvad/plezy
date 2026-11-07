@@ -97,7 +97,15 @@ class DiscoverHomeCache {
     }
   }
 
-  Future<void> clear(String profileId) async {
+  Future<void> clear(String profileId) {
+    // Ordered behind any write already queued, so a profile deletion cannot
+    // race a snapshot that was being persisted as the profile went away.
+    final next = _operationChain.then((_) => _clearOnce(profileId));
+    _operationChain = next;
+    return next;
+  }
+
+  Future<void> _clearOnce(String profileId) async {
     try {
       final file = File(await _path(profileId));
       if (await file.exists()) await file.delete();
