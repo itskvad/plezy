@@ -124,7 +124,7 @@ void main() {
 
   testWidgets('active deletion clears shelf before its first destructive mutation', (tester) async {
     final events = <String>[];
-    final harness = await _pumpHarness(tester, events: events, channel: channel);
+    final harness = await _pumpHarness(tester, events: events, channel: channel, temporaryRoot: temporaryRoot);
     addTearDown(harness.dispose);
     final target = harness.active.active!;
 
@@ -136,7 +136,7 @@ void main() {
 
   testWidgets('inactive deletion does not clear the active owner', (tester) async {
     final events = <String>[];
-    final harness = await _pumpHarness(tester, events: events, channel: channel);
+    final harness = await _pumpHarness(tester, events: events, channel: channel, temporaryRoot: temporaryRoot);
     addTearDown(harness.dispose);
     final inactive = Profile.local(id: 'inactive', displayName: 'Inactive', createdAt: DateTime(2026, 1, 2));
     await harness.profileRegistry.upsert(inactive);
@@ -150,7 +150,7 @@ void main() {
     'Plex sign-out that deletes downloads keeps account and joins when deletion fails, then retry completes',
     (tester) async {
       final events = <String>[];
-      final harness = await _pumpHarness(tester, events: events, channel: channel);
+      final harness = await _pumpHarness(tester, events: events, channel: channel, temporaryRoot: temporaryRoot);
       addTearDown(harness.dispose);
       const homeUserUuid = 'aaaaaaaaaaaaaaaa';
       final account = _plexAccount();
@@ -205,7 +205,7 @@ void main() {
     tester,
   ) async {
     final events = <String>[];
-    final harness = await _pumpHarness(tester, events: events, channel: channel);
+    final harness = await _pumpHarness(tester, events: events, channel: channel, temporaryRoot: temporaryRoot);
     addTearDown(harness.dispose);
     const homeUserUuid = 'aaaaaaaaaaaaaaaa';
     final account = _plexAccount();
@@ -238,7 +238,7 @@ void main() {
 
   testWidgets('Plex sign-out asks about downloads a borrower holds from the account servers only', (tester) async {
     final events = <String>[];
-    final harness = await _pumpHarness(tester, events: events, channel: channel);
+    final harness = await _pumpHarness(tester, events: events, channel: channel, temporaryRoot: temporaryRoot);
     addTearDown(harness.dispose);
     const homeUserUuid = 'aaaaaaaaaaaaaaaa';
     final account = _plexAccount();
@@ -263,7 +263,7 @@ void main() {
 
   testWidgets('full logout clears shelf before companion, identity, or credential teardown', (tester) async {
     final events = <String>[];
-    final harness = await _pumpHarness(tester, events: events, channel: channel);
+    final harness = await _pumpHarness(tester, events: events, channel: channel, temporaryRoot: temporaryRoot);
     addTearDown(harness.dispose);
 
     await expectLater(logoutAllProfiles(harness.context), throwsStateError);
@@ -308,6 +308,7 @@ Future<_Harness> _pumpHarness(
   WidgetTester tester, {
   required List<String> events,
   required MethodChannel channel,
+  required Directory temporaryRoot,
 }) async {
   final database = AppDatabase.forTesting(NativeDatabase.memory());
   final profileRegistry = ProfileRegistry(database);
