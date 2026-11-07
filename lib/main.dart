@@ -1353,16 +1353,18 @@ Future<bool> waitForFirstOnlineServerOrBindSettle({
   if (onlineServerIds().isNotEmpty && !firstOnline.isCompleted) firstOnline.complete(true);
 
   unawaited(
-    bindSettled.then((succeeded) {
-      onBindSettled(succeeded);
-      if (!firstOnline.isCompleted) firstOnline.complete(false);
-    }).catchError((Object error, StackTrace stackTrace) {
-      // A settle future should not throw, but a failure here must not strand
-      // the splash. Treat it as settled so the offline check can run.
-      appLogger.w('Startup bind settle failed', error: error, stackTrace: stackTrace);
-      onBindSettled(false);
-      if (!firstOnline.isCompleted) firstOnline.complete(false);
-    }),
+    bindSettled
+        .then((succeeded) {
+          onBindSettled(succeeded);
+          if (!firstOnline.isCompleted) firstOnline.complete(false);
+        })
+        .catchError((Object error, StackTrace stackTrace) {
+          // A settle future should not throw, but a failure here must not strand
+          // the splash. Treat it as settled so the offline check can run.
+          appLogger.w('Startup bind settle failed', error: error, stackTrace: stackTrace);
+          onBindSettled(false);
+          if (!firstOnline.isCompleted) firstOnline.complete(false);
+        }),
   );
 
   try {

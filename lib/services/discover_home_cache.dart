@@ -71,7 +71,7 @@ class DiscoverHomeCache {
     // otherwise collide on the same temp file, and logout must be able to
     // drain writes that were started by an instance it does not own.
     final next = _operationChain.then((_) {
-      if (_generationAtCreation != _generation) return;
+      if (_generationAtCreation != _generation) return Future<void>.value();
       return _writeOnce(profileId, snapshot);
     });
     _operationChain = next;
@@ -150,8 +150,7 @@ class DiscoverHomeCache {
       'hasMoreContinueWatching': snapshot.hasMoreContinueWatching,
       'onDeck': [for (final item in snapshot.onDeck) item.toJson()],
       'copies': {
-        for (final MapEntry(:key, :value) in snapshot.copies.entries)
-          key: [for (final item in value) item.toJson()],
+        for (final MapEntry(:key, :value) in snapshot.copies.entries) key: [for (final item in value) item.toJson()],
       },
       'hubs': [for (final hub in snapshot.hubs) hub.toJson()],
     };
