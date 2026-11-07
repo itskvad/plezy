@@ -101,9 +101,9 @@ class DiscoverProvider extends ChangeNotifier with DisposableChangeNotifierMixin
     this.libraryEventCooldown = const Duration(minutes: 2),
     Future<void> Function(String profileId, List<MediaItem>)? syncSystemShelf,
     Future<void> Function(String profileId, List<MediaServerClient> clients)? syncServerSources,
-    // A private field cannot be a named initializing formal callers can pass.
-    // ignore: prefer_initializing_formals
   }) : _watchStateStore = watchStateStore,
+       // This public parameter cannot be a named formal for a private field.
+       // ignore: prefer_initializing_formals
        _homeCache = homeCache,
        _now = now ?? DateTime.now,
        _isRefreshBlocked = isRefreshBlocked ?? _neverBlocked,
