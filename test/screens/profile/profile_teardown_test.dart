@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:plezy/connection/connection.dart';
 import 'package:plezy/connection/connection_registry.dart';
 import 'package:plezy/database/app_database.dart';
@@ -29,6 +31,7 @@ import 'package:plezy/services/storage_service.dart';
 import 'package:plezy/services/system_shelf_service.dart';
 import 'package:provider/provider.dart';
 
+import '../../test_helpers/io_fakes.dart';
 import '../../test_helpers/multi_server_fixtures.dart';
 import '../../test_helpers/prefs.dart';
 
@@ -106,13 +109,20 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   const channel = MethodChannel('test/profile_teardown_shelf');
   final messenger = TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+  late Directory temporaryRoot;
+  late PathProviderPlatform previousPathProvider;
 
-  setUp(() {
+  setUp(() async {
     resetSharedPreferencesForTest();
     CredentialVault.resetKeyForTesting();
+    temporaryRoot = await Directory.systemTemp.createTemp('profile-teardown-test-');
+    previousPathProvider = PathProviderPlatform.instance;
+    PathProviderPlatform.instance = FakePathProvider(temporaryRoot);
   });
 
-  tearDown(() {
+  tearDown(() async {
+    PathProviderPlatform.instance = previousPathProvider;
+    if (await temporaryRoot.exists()) await temporaryRoot.delete(recursive: true);
     messenger.setMockMethodCallHandler(channel, null);
     SystemShelfService.debugOverrideInstance(null);
   });
