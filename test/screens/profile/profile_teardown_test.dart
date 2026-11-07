@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
@@ -104,27 +103,40 @@ class _Playback extends ChangeNotifier implements PlaybackStateProvider {
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
+class _DiscoverHomeCache extends DiscoverHomeCache {
+  _DiscoverHomeCache(this.events);
+
+  final List<String> events;
+
+  @override
+  Future<void> clear(String profileId) async {
+    events.add('clear-home:$profileId');
+  }
+
+  @override
+  Future<void> clearAll() async {
+    events.add('clear-all-home');
+  }
+}
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   const channel = MethodChannel('test/profile_teardown_shelf');
   final messenger = TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
-  late Directory temporaryRoot;
 
-  setUp(() async {
+  setUp(() {
     resetSharedPreferencesForTest();
     CredentialVault.resetKeyForTesting();
-    temporaryRoot = await Directory.systemTemp.createTemp('profile-teardown-test-');
   });
 
-  tearDown(() async {
-    if (await temporaryRoot.exists()) await temporaryRoot.delete(recursive: true);
+  tearDown(() {
     messenger.setMockMethodCallHandler(channel, null);
     SystemShelfService.debugOverrideInstance(null);
   });
 
   testWidgets('active deletion clears shelf before its first destructive mutation', (tester) async {
     final events = <String>[];
-    final harness = await _pumpHarness(tester, events: events, channel: channel, temporaryRoot: temporaryRoot);
+    final harness = await _pumpHarness(tester, events: events, channel: channel);
     addTearDown(harness.dispose);
     final target = harness.active.active!;
 
@@ -136,7 +148,7 @@ void main() {
 
   testWidgets('inactive deletion does not clear the active owner', (tester) async {
     final events = <String>[];
-    final harness = await _pumpHarness(tester, events: events, channel: channel, temporaryRoot: temporaryRoot);
+    final harness = await _pumpHarness(tester, events: events, channel: channel);
     addTearDown(harness.dispose);
     final inactive = Profile.local(id: 'inactive', displayName: 'Inactive', createdAt: DateTime(2026, 1, 2));
     await harness.profileRegistry.upsert(inactive);
@@ -150,7 +162,7 @@ void main() {
     'Plex sign-out that deletes downloads keeps account and joins when deletion fails, then retry completes',
     (tester) async {
       final events = <String>[];
-      final harness = await _pumpHarness(tester, events: events, channel: channel, temporaryRoot: temporaryRoot);
+      final harness = await _pumpHarness(tester, events: events, channel: channel);
       addTearDown(harness.dispose);
       const homeUserUuid = 'aaaaaaaaaaaaaaaa';
       final account = _plexAccount();
@@ -197,6 +209,7 @@ void main() {
       expect(await harness.database.getSyncRules(profileId: virtualProfileId), isEmpty);
       expect(await harness.database.getPendingSyncCount(profileId: virtualProfileId), 0);
       expect(events.where((event) => event == 'delete-downloads:$virtualProfileId'), hasLength(2));
+      expect(events, contains('clear-home:$virtualProfileId'));
       expect(events, contains('release-downloads:active:[plex-machine]'));
     },
   );
@@ -205,7 +218,7 @@ void main() {
     tester,
   ) async {
     final events = <String>[];
-    final harness = await _pumpHarness(tester, events: events, channel: channel, temporaryRoot: temporaryRoot);
+    final harness = await _pumpHarness(tester, events: events, channel: channel);
     addTearDown(harness.dispose);
     const homeUserUuid = 'aaaaaaaaaaaaaaaa';
     final account = _plexAccount();
@@ -238,7 +251,7 @@ void main() {
 
   testWidgets('Plex sign-out asks about downloads a borrower holds from the account servers only', (tester) async {
     final events = <String>[];
-    final harness = await _pumpHarness(tester, events: events, channel: channel, temporaryRoot: temporaryRoot);
+    final harness = await _pumpHarness(tester, events: events, channel: channel);
     addTearDown(harness.dispose);
     const homeUserUuid = 'aaaaaaaaaaaaaaaa';
     final account = _plexAccount();
@@ -263,7 +276,7 @@ void main() {
 
   testWidgets('full logout clears shelf before companion, identity, or credential teardown', (tester) async {
     final events = <String>[];
-    final harness = await _pumpHarness(tester, events: events, channel: channel, temporaryRoot: temporaryRoot);
+    final harness = await _pumpHarness(tester, events: events, channel: channel);
     addTearDown(harness.dispose);
 
     await expectLater(logoutAllProfiles(harness.context), throwsStateError);
@@ -308,7 +321,6 @@ Future<_Harness> _pumpHarness(
   WidgetTester tester, {
   required List<String> events,
   required MethodChannel channel,
-  required Directory temporaryRoot,
 }) async {
   final database = AppDatabase.forTesting(NativeDatabase.memory());
   final profileRegistry = ProfileRegistry(database);
@@ -341,6 +353,7 @@ Future<_Harness> _pumpHarness(
     return true;
   });
 
+  final discoverHomeCache = _DiscoverHomeCache(events);
   BuildContext? captured;
   await tester.pumpWidget(
     MultiProvider(
@@ -351,7 +364,7 @@ Future<_Harness> _pumpHarness(
         Provider<ConnectionRegistry>.value(value: connections),
         Provider<ProfileConnectionRegistry>.value(value: profileConnections),
         Provider<PlexHomeService>.value(value: plexHome),
-        Provider<DiscoverHomeCache?>.value(value: DiscoverHomeCache(directoryProvider: () async => temporaryRoot)),
+        Provider<DiscoverHomeCache?>.value(value: discoverHomeCache),
         ChangeNotifierProvider<ActiveProfileProvider>.value(value: active),
         Provider<ActiveProfileBinder>.value(value: _Binder(events)),
         ChangeNotifierProvider<MultiServerProvider>.value(value: multiServer),
@@ -373,6 +386,9 @@ Future<_Harness> _pumpHarness(
     ),
   );
   await tester.pump();
+  if (!identical(captured!.read<DiscoverHomeCache?>(), discoverHomeCache)) {
+    throw StateError('The teardown harness did not provide its DiscoverHomeCache fake.');
+  }
   return _Harness(
     context: captured!,
     active: active,
