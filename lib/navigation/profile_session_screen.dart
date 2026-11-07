@@ -254,7 +254,7 @@ class _ProfileSessionScreenState extends State<ProfileSessionScreen> {
                     isRefreshBlocked: () => VideoPlayerScreenState.activeGlobalKey != null,
                     profileId: activeId,
                     // Per-profile cold-start first paint for the home tab.
-                    homeCache: DiscoverHomeCache(),
+                    snapshotCache: DiscoverHomeCache(),
                   );
                 },
               ),

@@ -93,7 +93,7 @@ class DiscoverProvider extends ChangeNotifier with DisposableChangeNotifierMixin
     required this.profileId,
     required this.isProfileBinding,
     WatchStateStore? watchStateStore,
-    DiscoverHomeCache? homeCache,
+    DiscoverHomeCache? snapshotCache,
     DateTime Function()? now,
     bool Function()? isRefreshBlocked,
     this.libraryEventDebounce = const Duration(seconds: 3),
@@ -102,9 +102,7 @@ class DiscoverProvider extends ChangeNotifier with DisposableChangeNotifierMixin
     Future<void> Function(String profileId, List<MediaItem>)? syncSystemShelf,
     Future<void> Function(String profileId, List<MediaServerClient> clients)? syncServerSources,
   }) : _watchStateStore = watchStateStore,
-       // This public parameter cannot be a named formal for a private field.
-       // ignore: prefer_initializing_formals
-       _homeCache = homeCache,
+       _homeCache = snapshotCache,
        _now = now ?? DateTime.now,
        _isRefreshBlocked = isRefreshBlocked ?? _neverBlocked,
        _syncSystemShelfOverride = syncSystemShelf,
