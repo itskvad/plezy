@@ -39,6 +39,59 @@ void main() {
       });
     });
 
+    test('splash leaves as soon as one server is online, without waiting for every bind', () async {
+      final progress = StreamController<({String serverId, bool online})>.broadcast();
+      final bindSettled = Completer<bool>();
+      var settleCallbacks = 0;
+      addTearDown(progress.close);
+
+      final wait = waitForFirstOnlineServerOrBindSettle(
+        progress: progress.stream,
+        onlineServerIds: () => const {},
+        bindSettled: bindSettled.future,
+        onBindSettled: (_) => settleCallbacks++,
+      );
+
+      progress.add((serverId: 'fast', online: true));
+      expect(await wait, isTrue);
+      expect(settleCallbacks, 0, reason: 'the slow server binding later must not re-gate the splash');
+
+      bindSettled.complete(false);
+      await Future<void>.delayed(Duration.zero);
+      expect(settleCallbacks, 1, reason: 'the late settle still records the real bind outcome');
+    });
+
+    test('with no server online the splash waits for the full bind outcome', () async {
+      final progress = StreamController<({String serverId, bool online})>.broadcast();
+      addTearDown(progress.close);
+      bool? settled;
+
+      final result = await waitForFirstOnlineServerOrBindSettle(
+        progress: progress.stream,
+        onlineServerIds: () => const {},
+        bindSettled: Future<bool>.value(false),
+        onBindSettled: (value) => settled = value,
+      );
+
+      expect(result, isFalse);
+      expect(settled, isFalse);
+    });
+
+    test('an already-online server short-circuits before subscribing', () async {
+      final progress = StreamController<({String serverId, bool online})>.broadcast();
+      addTearDown(progress.close);
+
+      expect(
+        await waitForFirstOnlineServerOrBindSettle(
+          progress: progress.stream,
+          onlineServerIds: () => {'already-online'},
+          bindSettled: Completer<bool>().future,
+          onBindSettled: (_) {},
+        ),
+        isTrue,
+      );
+    });
+
     test('retries active profile bind when reconnect has no visible servers', () {
       expect(
         shouldRetryActiveProfileBindAfterReconnect(

@@ -11,6 +11,7 @@ import '../mixins/disposable_change_notifier_mixin.dart';
 import '../mixins/event_aware.dart';
 import '../services/settings_service.dart';
 import '../services/data_aggregation_service.dart';
+import '../services/discover_home_cache.dart';
 import '../services/system_shelf_service.dart';
 import '../utils/app_logger.dart';
 import '../utils/coalesced_load_coordinator.dart';
@@ -92,6 +93,7 @@ class DiscoverProvider extends ChangeNotifier with DisposableChangeNotifierMixin
     required this.profileId,
     required this.isProfileBinding,
     WatchStateStore? watchStateStore,
+    DiscoverHomeCache? homeCache,
     DateTime Function()? now,
     bool Function()? isRefreshBlocked,
     this.libraryEventDebounce = const Duration(seconds: 3),
@@ -102,6 +104,7 @@ class DiscoverProvider extends ChangeNotifier with DisposableChangeNotifierMixin
     // A private field cannot be a named initializing formal callers can pass.
     // ignore: prefer_initializing_formals
   }) : _watchStateStore = watchStateStore,
+       _homeCache = homeCache,
        _now = now ?? DateTime.now,
        _isRefreshBlocked = isRefreshBlocked ?? _neverBlocked,
        _syncSystemShelfOverride = syncSystemShelf,
@@ -138,6 +141,10 @@ class DiscoverProvider extends ChangeNotifier with DisposableChangeNotifierMixin
       onEvent: _onDeletion,
     );
     _libraryEventSubscription = LibraryContentNotifier().stream.listen(_onLibraryContentChanged);
+    // Start immediately: the file read races the screen's first `load()` on
+    // purpose, and the load awaits it below before capturing its rollback
+    // state.
+    unawaited(_cacheHydration);
   }
 
   final MultiServerProvider _multiServer;
@@ -174,6 +181,13 @@ class DiscoverProvider extends ChangeNotifier with DisposableChangeNotifierMixin
   /// Optional: tests and isolated subtrees may have no store.
   final WatchStateStore? _watchStateStore;
   final String? profileId;
+
+  /// Optional cold-start snapshot. Null in tests and isolated subtrees.
+  final DiscoverHomeCache? _homeCache;
+
+  /// Completed before a load pass reads or replaces home content, so the
+  /// cached snapshot can never overwrite a pass that already committed.
+  late final Future<void> _cacheHydration = _hydrateCachedHome();
 
   /// Watermark plus store identity captured before an authoritative request.
   /// Null when there is no store to reconcile against.
@@ -374,6 +388,11 @@ class DiscoverProvider extends ChangeNotifier with DisposableChangeNotifierMixin
   }
 
   Future<void> _loadOnce() async {
+    // Capture the rollback snapshot after the cached first paint lands, not
+    // before: a pass that fails must keep the snapshot instead of reverting
+    // to the empty pre-cache state.
+    await _cacheHydration;
+    if (isDisposed) return;
     var outcome = DiscoverRefreshOutcome.cancelled;
     var passClearedExceptionBoundary = false;
     List<MediaItem>? systemShelfPassToken;
@@ -431,8 +450,13 @@ class DiscoverProvider extends ChangeNotifier with DisposableChangeNotifierMixin
       if (isDisposed || isProfileBinding()) return;
       ++_contentRevision;
       appLogger.d('DiscoverProvider: loading content from all servers');
-      _onDeckState = DiscoverLoadState.loading;
-      _hubsState = DiscoverLoadState.loading;
+      // The screen hides all content while `isLoading`. Keep a populated home
+      // (including one restored from cache) visible during the pass instead of
+      // replacing it with a skeleton; only a genuinely empty surface loads.
+      if (_onDeck.isEmpty && _hubs.isEmpty) {
+        _onDeckState = DiscoverLoadState.loading;
+        _hubsState = DiscoverLoadState.loading;
+      }
       _errorMessage = null;
       safeNotifyListeners();
 
@@ -554,6 +578,7 @@ class DiscoverProvider extends ChangeNotifier with DisposableChangeNotifierMixin
       _libraryEventPacer.notePass();
       settlePassOutcome();
       safeNotifyListeners();
+      unawaited(_persistHomeSnapshot());
     } catch (e) {
       if (isDisposed) return;
       outcome = isProfileBinding() ? DiscoverRefreshOutcome.cancelled : DiscoverRefreshOutcome.failed;
@@ -614,11 +639,67 @@ class DiscoverProvider extends ChangeNotifier with DisposableChangeNotifierMixin
     }
   }
 
+  /// Paint the previous launch's home before any network work. Only runs while
+  /// the provider has no content of its own; a load pass that commits first
+  /// wins, and a restored snapshot is replaced by the pass that follows.
+  Future<void> _hydrateCachedHome() async {
+    final cache = _homeCache;
+    final owner = profileId;
+    if (cache == null || owner == null || owner.isEmpty) return;
+    try {
+      final snapshot = await cache.read(owner);
+      if (isDisposed || snapshot == null) return;
+      if (_onDeck.isNotEmpty || _hubs.isNotEmpty) return;
+      if (snapshot.onDeck.isEmpty && snapshot.hubs.isEmpty) return;
+      _onDeck = snapshot.onDeck;
+      _continueWatchingCopies = snapshot.copies;
+      _hasMoreContinueWatching = snapshot.hasMoreContinueWatching;
+      _hubs = snapshot.hubs;
+      _onDeckState = DiscoverLoadState.loaded;
+      _hubsState = DiscoverLoadState.loaded;
+      // Preserve the write time so `refreshIfStale` still treats the snapshot
+      // as old and a resume/tab-show fetches instead of trusting it.
+      _hubsLoadedAt = snapshot.savedAt;
+      safeNotifyListeners();
+    } catch (e, st) {
+      appLogger.d('Discover home cache hydrate failed', error: e, stackTrace: st);
+    }
+  }
+
+  /// Persist the current home so the next cold start paints it immediately.
+  /// Writes are coalesced by the caller (full/delta/on-deck commits) and are
+  /// skipped while binding, when content may still belong to the old profile.
+  Future<void> _persistHomeSnapshot() async {
+    final cache = _homeCache;
+    final owner = profileId;
+    if (cache == null || owner == null || owner.isEmpty || isDisposed || isProfileBinding()) return;
+    if (_onDeck.isEmpty && _hubs.isEmpty) return;
+    try {
+      await cache.write(
+        owner,
+        DiscoverHomeSnapshot(
+          onDeck: List<MediaItem>.unmodifiable(_onDeck),
+          copies: {
+            for (final MapEntry(:key, :value) in _continueWatchingCopies.entries)
+              key: List<MediaItem>.unmodifiable(value),
+          },
+          hubs: List<MediaHub>.unmodifiable(_hubs),
+          hasMoreContinueWatching: _hasMoreContinueWatching,
+          savedAt: _now(),
+        ),
+      );
+    } catch (e, st) {
+      appLogger.d('Discover home cache persist failed', error: e, stackTrace: st);
+    }
+  }
+
   /// Fetch Continue Watching + hubs from [serverIds] only (servers that came
   /// online after the last full pass) and merge them into the loaded state.
   /// Failures keep the loaded state and leave the ids un-loaded, so the next
   /// status emission retries them.
   Future<void> _loadDeltaOnce(Set<String> serverIds) async {
+    await _cacheHydration;
+    if (isDisposed) return;
     ++_contentRevision;
     // A full pass may have covered these ids while they sat in the queue.
     final ids = serverIds.difference(_fullyLoadedServerIds);
@@ -708,6 +789,7 @@ class DiscoverProvider extends ChangeNotifier with DisposableChangeNotifierMixin
       appLogger.d('DiscoverProvider: ${_onDeck.length} on-deck items, ${_hubs.length} hubs after merging $ids');
       safeNotifyListeners();
       unawaited(_syncSystemShelf(_onDeck));
+      unawaited(_persistHomeSnapshot());
     } catch (e) {
       if (isDisposed) return;
       // Keep the loaded state — stale rows beat an error flash.
@@ -823,6 +905,8 @@ class DiscoverProvider extends ChangeNotifier with DisposableChangeNotifierMixin
   }
 
   Future<void> _refreshContinueWatchingOnce() async {
+    await _cacheHydration;
+    if (isDisposed) return;
     try {
       if (isProfileBinding() || !_multiServer.hasConnectedServers) return;
       final revision = _contentRevision;
@@ -853,6 +937,7 @@ class DiscoverProvider extends ChangeNotifier with DisposableChangeNotifierMixin
       _recordObservations(observation, fetched.observedItems, fetched.succeededServerIds);
       safeNotifyListeners();
       unawaited(_syncSystemShelf(_onDeck));
+      unawaited(_persistHomeSnapshot());
     } catch (e) {
       appLogger.w('Failed to refresh Continue Watching', error: e);
     }

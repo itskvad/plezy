@@ -19,9 +19,12 @@ final _artworkHttpClient = MediaServerHttpClient();
 @visibleForTesting
 int artworkRequestConcurrencyForTier({required bool reduced}) => reduced ? 3 : 6;
 
-// Top-level fields are initialized lazily. The first artwork request happens
-// after DevicePerformance has resolved the hardware tier during bootstrap.
-final _artworkRequestLimiter = _RequestLimiter(artworkRequestConcurrencyForTier(reduced: DevicePerformance.isReduced));
+// Read the active tier at acquisition time so changing Visual Effects in
+// Settings also updates artwork concurrency without restarting the app.
+final _artworkRequestLimiter = _RequestLimiter(
+  artworkRequestConcurrencyForTier(reduced: DevicePerformance.isReduced),
+  currentLimit: () => artworkRequestConcurrencyForTier(reduced: DevicePerformance.isReduced),
+);
 
 Future<void> closeArtworkHttpClientGracefully({Duration drainTimeout = const Duration(seconds: 5)}) {
   return _artworkHttpClient.closeGracefully(drainTimeout: drainTimeout);
@@ -297,28 +300,36 @@ void _cancelUnclaimedBody(Stream<List<int>> stream) {
 
 class _RequestLimiter {
   final int maxConcurrent;
+  final int Function()? currentLimit;
   final Queue<Completer<_RequestPermit>> _queue = Queue<Completer<_RequestPermit>>();
   int _active = 0;
 
-  _RequestLimiter(this.maxConcurrent);
+  _RequestLimiter(this.maxConcurrent, {this.currentLimit});
+
+  int get _limit => currentLimit?.call() ?? maxConcurrent;
 
   Future<_RequestPermit> acquire() {
-    if (_active < maxConcurrent) {
+    if (_queue.isEmpty && _active < _limit) {
       _active++;
       return Future.value(_RequestPermit(this));
     }
 
     final completer = Completer<_RequestPermit>();
     _queue.add(completer);
+    _fillSlots();
     return completer.future;
   }
 
   void _release() {
-    if (_queue.isNotEmpty) {
-      _queue.removeFirst().complete(_RequestPermit(this));
-      return;
-    }
     if (_active > 0) _active--;
+    _fillSlots();
+  }
+
+  void _fillSlots() {
+    while (_queue.isNotEmpty && _active < _limit) {
+      _active++;
+      _queue.removeFirst().complete(_RequestPermit(this));
+    }
   }
 }
 

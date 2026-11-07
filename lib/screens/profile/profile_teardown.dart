@@ -23,6 +23,7 @@ import '../../providers/hidden_libraries_provider.dart';
 import '../../providers/multi_server_provider.dart';
 import '../../providers/playback_state_provider.dart';
 import '../../services/api_cache.dart';
+import '../../services/discover_home_cache.dart';
 import '../../services/multi_server_manager.dart';
 import '../../services/storage_service.dart';
 import '../../services/system_shelf_service.dart';
@@ -393,6 +394,7 @@ Future<void> logoutAllProfiles(BuildContext context) async {
   // Preserve pinned rows backing offline downloads; all session/API data is
   // volatile and must not cross into the next sign-in.
   await ApiCache.clearRegisteredVolatile();
+  await DiscoverHomeCache().clearAll();
   await scope.hiddenLibraries?.refresh();
   playbackState.clearShuffle();
 

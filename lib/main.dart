@@ -946,6 +946,7 @@ Future<_StartupDependencies> _initializeStartup(SettingsService settings) async 
   }
 
   AppDatabase? openedDatabase;
+  Future<AppDatabaseBootstrap>? databaseOpen;
   // Started first so the store walk overlaps the phases below. Every request
   // to a user-entered server verifies against the result, so it is awaited
   // before any client can exist (#2339); the load itself never throws.
@@ -958,6 +959,28 @@ Future<_StartupDependencies> _initializeStartup(SettingsService settings) async 
       await LocaleSettings.setLocale(savedLocale);
     });
     markStartupPhase('locale');
+
+    // Preferences and the database are what the first real screen needs, and
+    // neither depends on window chrome, device detection, or the certificate
+    // store. Start both before those phases so the dominant database open
+    // overlaps them instead of waiting behind a platform-channel round trip.
+    final storageFuture = _gatePhase(StartupPhase.storage, StorageService.getInstance);
+    // Attach a listener now: a fast failure must not surface as an unhandled
+    // async error while the optional phases below are still running. The
+    // original future still throws for the awaited caller.
+    storageFuture.ignore();
+
+    AndroidExitDiagnostics.markStartupPhase(AndroidStartupPhase.databaseOpenStarted);
+    final databaseFuture = _gatePhase(
+      StartupPhase.database,
+      () => openAppDatabaseWithDownloadRecovery(
+        openDatabase: () => AppDatabase.open(isTvos: PlatformDetector.isAppleTV()),
+        recoverNativeDownloads: DownloadManagerService.discardInterruptedNativeDownloadsAfterStorageFailure,
+        storageFullMessage: t.downloads.storageFull,
+      ),
+    );
+    databaseOpen = databaseFuture;
+    databaseFuture.ignore();
 
     // Window chrome is cosmetic; losing it costs the custom titlebar and the
     // remembered size, not the app. It is also the step most exposed to a
@@ -985,18 +1008,10 @@ Future<_StartupDependencies> _initializeStartup(SettingsService settings) async 
       await _optionalGatePhase(StartupPhase.certificateTrust, () => userAuthorities);
     }
 
-    final storage = await _gatePhase(StartupPhase.storage, StorageService.getInstance);
+    final storage = await storageFuture;
     markStartupPhase('platform-services');
 
-    AndroidExitDiagnostics.markStartupPhase(AndroidStartupPhase.databaseOpenStarted);
-    final databaseBootstrap = await _gatePhase(
-      StartupPhase.database,
-      () => openAppDatabaseWithDownloadRecovery(
-        openDatabase: () => AppDatabase.open(isTvos: PlatformDetector.isAppleTV()),
-        recoverNativeDownloads: DownloadManagerService.discardInterruptedNativeDownloadsAfterStorageFailure,
-        storageFullMessage: t.downloads.storageFull,
-      ),
-    );
+    final databaseBootstrap = await databaseFuture;
     openedDatabase = databaseBootstrap.database;
     AndroidExitDiagnostics.markStartupPhase(AndroidStartupPhase.databaseReady);
     markStartupPhase('database-recovery');
@@ -1012,7 +1027,21 @@ Future<_StartupDependencies> _initializeStartup(SettingsService settings) async 
       databaseRecoveryOutcome: databaseBootstrap.recoveryOutcome,
     );
   } catch (_) {
-    await openedDatabase?.close();
+    final opened = openedDatabase;
+    if (opened != null) {
+      await opened.close();
+    } else {
+      // The database open may still be in flight when another gate phase
+      // fails. Release it if it lands after we have abandoned startup.
+      final pending = databaseOpen;
+      if (pending != null) {
+        unawaited(
+          pending
+              .then<void>((bootstrap) => bootstrap.database.close())
+              .catchError((Object error, StackTrace stackTrace) {}),
+        );
+      }
+    }
     rethrow;
   }
 }
@@ -1292,6 +1321,55 @@ bool shouldEnterOfflineModeAfterStartupBind({required bool bindingSucceeded, req
 Future<bool> awaitStartupBindSettle(Future<bool> settle, {required bool hasNetwork}) {
   if (hasNetwork) return settle;
   return settle.timeout(MediaServerTimeouts.noNetworkStartupBind, onTimeout: () => false);
+}
+
+/// Resolves `true` as soon as any server reports online, or `false` when the
+/// full bind settles first.
+///
+/// The splash used to wait for *every* server, so one slow (or unreachable)
+/// server held the shell for up to [MediaServerTimeouts.perServerConnect],
+/// even after another server was already usable. MainScreen primes libraries
+/// and Discover when the binder settles, and [OfflineModeProvider] owns the
+/// no-server-online verdict, so entering on the first online server is safe.
+/// The bind keeps running in the background.
+///
+/// The progress subscription is always cancelled: an abandoned wait must not
+/// keep the disposed splash state alive until some future server connects.
+@visibleForTesting
+Future<bool> waitForFirstOnlineServerOrBindSettle({
+  required Stream<({String serverId, bool online})> progress,
+  required Set<String> Function() onlineServerIds,
+  required Future<bool> bindSettled,
+  required void Function(bool succeeded) onBindSettled,
+}) async {
+  if (onlineServerIds().isNotEmpty) return true;
+
+  final firstOnline = Completer<bool>();
+  final subscription = progress.listen((event) {
+    if (event.online && !firstOnline.isCompleted) firstOnline.complete(true);
+  });
+  // Re-check after subscribing: a status that landed between the first check
+  // and `listen` would otherwise be missed and we would wait for the full bind.
+  if (onlineServerIds().isNotEmpty && !firstOnline.isCompleted) firstOnline.complete(true);
+
+  unawaited(
+    bindSettled.then((succeeded) {
+      onBindSettled(succeeded);
+      if (!firstOnline.isCompleted) firstOnline.complete(false);
+    }).catchError((Object error, StackTrace stackTrace) {
+      // A settle future should not throw, but a failure here must not strand
+      // the splash. Treat it as settled so the offline check can run.
+      appLogger.w('Startup bind settle failed', error: error, stackTrace: stackTrace);
+      onBindSettled(false);
+      if (!firstOnline.isCompleted) firstOnline.complete(false);
+    }),
+  );
+
+  try {
+    return await firstOnline.future;
+  } finally {
+    await subscription.cancel();
+  }
 }
 
 /// Top-level PIN prompt used by [ActiveProfileBinder] when it runs above the
@@ -2202,6 +2280,12 @@ class _SetupScreenState extends State<SetupScreen> with MountedSetStateMixin {
 
     _setStatus(t.common.checkingNetwork);
 
+    // The connectivity result only controls how long startup waits for server
+    // binding; it never skips LAN or loopback servers. Start the bounded probe
+    // before local migration and profile work so its wait overlaps that work.
+    unawaited(Sentry.addBreadcrumb(Breadcrumb(message: 'Checking network connectivity', category: 'setup')));
+    final connectivityFuture = ConnectivityProbe.check();
+
     final storage = await StorageService.getInstance();
     final registry = ServerRegistry(storage);
 
@@ -2245,9 +2329,8 @@ class _SetupScreenState extends State<SetupScreen> with MountedSetStateMixin {
     // OS connectivity only bounds how long the splash waits for the bind
     // below. It never skips connecting: `none` means "no internet-capable
     // adapter", and a loopback or LAN-without-WAN server is still reachable
-    // (#2505).
-    unawaited(Sentry.addBreadcrumb(Breadcrumb(message: 'Checking network connectivity', category: 'setup')));
-    final hasNetwork = !(await ConnectivityProbe.check()).contains(ConnectivityResult.none);
+    // (#2505). The bounded check has been running alongside local setup.
+    final hasNetwork = !(await connectivityFuture).contains(ConnectivityResult.none);
 
     unawaited(
       Sentry.addBreadcrumb(Breadcrumb(message: 'Network check done: hasNetwork=$hasNetwork', category: 'setup')),
@@ -2374,6 +2457,7 @@ class _SetupScreenState extends State<SetupScreen> with MountedSetStateMixin {
           !linkApplied && (linkSwitches || hasNoActive || activeProfile.requiresSelectionOnOpen(settings));
 
       var bindingSucceeded = activeProfile.lastBindingSucceeded;
+      var enteredBeforeBindSettled = false;
       if (shouldPrompt) {
         await Navigator.of(
           context,
@@ -2381,13 +2465,20 @@ class _SetupScreenState extends State<SetupScreen> with MountedSetStateMixin {
         if (!mounted) return;
         bindingSucceeded = activeProfile.active != null && activeProfile.lastBindingSucceeded;
       } else if (!linkSwitches) {
-        // Now wait for the binder to settle. This is the media-server client
-        // race: per-server status flips on the splash list as each client comes
-        // online, and we don't push MainScreen until they're all done (success
-        // or fail). Eliminates the "Failed to load discover content: No servers
-        // available" race the old eager-navigate flow caused. Without a network
-        // the wait is capped so airplane mode reaches the offline shell fast.
-        bindingSucceeded = await awaitStartupBindSettle(activeProfile.awaitBindingSettle(), hasNetwork: hasNetwork);
+        // Wait only for the first server to come online, or for the whole bind
+        // to settle when none does. Previously every server had to settle, so
+        // one slow (or unreachable) server held the shell for up to
+        // [MediaServerTimeouts.perServerConnect] after a usable server was
+        // already online. The binder keeps running; MainScreen primes its
+        // services on settle and OfflineModeProvider owns the no-server
+        // verdict, so the old "No servers available" race stays covered.
+        // Without a network the bind-settle wait is capped, as before.
+        enteredBeforeBindSettled = await waitForFirstOnlineServerOrBindSettle(
+          progress: _serverManagerFromContext().connectProgressStream,
+          onlineServerIds: () => _serverManagerFromContext().onlineServerIds.toSet(),
+          bindSettled: awaitStartupBindSettle(activeProfile.awaitBindingSettle(), hasNetwork: hasNetwork),
+          onBindSettled: (succeeded) => bindingSucceeded = succeeded,
+        );
         if (!mounted) return;
       }
       AndroidExitDiagnostics.markStartupPhase(AndroidStartupPhase.bindingSettled);
@@ -2405,8 +2496,19 @@ class _SetupScreenState extends State<SetupScreen> with MountedSetStateMixin {
       // are resolvable (the Connections row + live MediaBrowser client are in
       // place). Without this the downloads list and sync-rule titles render
       // empty until something forces a later refresh.
-      await downloadProvider.refreshMetadataFromCache();
-      if (!mounted) return;
+      if (enteredBeforeBindSettled) {
+        // MainScreen's bind-settle prime runs this again once every client is
+        // wired. Let the first usable server reach the shell now instead of
+        // waiting on a cache walk that the prime will redo.
+        unawaited(
+          downloadProvider.refreshMetadataFromCache().catchError((Object error, StackTrace stackTrace) {
+            appLogger.w('Setup: download metadata refresh failed', error: error, stackTrace: stackTrace);
+          }),
+        );
+      } else {
+        await downloadProvider.refreshMetadataFromCache();
+        if (!mounted) return;
+      }
 
       AndroidExitDiagnostics.markStartupPhase(AndroidStartupPhase.mainScreen);
       unawaited(

@@ -48,6 +48,7 @@ class SeerrAccountProvider extends ChangeNotifier with DisposableChangeNotifierM
   final SeerrSessionStore _store;
   final SeerrAuthService authService;
   SeerrPlexTokenSupplier? _plexTokenSupplier;
+  Future<void> Function()? _startupReady;
 
   final FutureCoalescer<void> _userRefresh = FutureCoalescer();
 
@@ -76,6 +77,11 @@ class SeerrAccountProvider extends ChangeNotifier with DisposableChangeNotifierM
   /// profile session subtree).
   void bindPlexTokenSupplier(SeerrPlexTokenSupplier supplier) => _plexTokenSupplier = supplier;
 
+  /// Wired once from the provider tree. The bind-time `/auth/me` refresh waits
+  /// for this so it cannot compete with the first home/library fan-out on a
+  /// cold start (it also used to fire before the servers were reachable).
+  void bindStartupReady(Future<void> Function() ready) => _startupReady = ready;
+
   /// The connect screen's "Sign in with Plex" needs the same token the
   /// silent re-auth path would use. Null on Jellyfin-only setups.
   Future<String?> resolvePlexToken() async {
@@ -97,7 +103,23 @@ class SeerrAccountProvider extends ChangeNotifier with DisposableChangeNotifierM
     if (!_isCurrentBinding(userUuid, generation)) return;
     final loaded = await _store.load(userUuid);
     _setSessionAndRebind(userUuid, generation, loaded);
-    if (_isCurrentBinding(userUuid, generation)) unawaited(refreshUser());
+    if (_isCurrentBinding(userUuid, generation)) unawaited(_refreshUserAfterStartup());
+  }
+
+  /// Defers the permission/display-name refresh until the app has finished
+  /// its startup work. The stored session is already usable (and the client
+  /// already bound), so this is a background reconciliation, not a gate.
+  Future<void> _refreshUserAfterStartup() async {
+    final ready = _startupReady;
+    if (ready != null) {
+      try {
+        await ready();
+      } catch (e, st) {
+        appLogger.d('Seerr: startup readiness wait failed', error: e, stackTrace: st);
+      }
+    }
+    if (isDisposed) return;
+    await refreshUser();
   }
 
   /// A stored session's permissions and display name date from sign-in;

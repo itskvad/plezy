@@ -303,16 +303,6 @@ class _LibraryBrowseTabState extends BaseLibraryTabState<MediaItem, LibraryBrows
     pos.jumpTo((pos.pixels + rowDelta * _scrollMetrics.rowHeight).clamp(0.0, pos.maxScrollExtent));
   }
 
-  /// Index currently holding the item with [id], or null when [id] is null or
-  /// the item is no longer loaded.
-  int? _loadedIndexOfId(String? id) {
-    if (id == null) return null;
-    for (final entry in loadedItems.entries) {
-      if (entry.value.id == id) return entry.key;
-    }
-    return null;
-  }
-
   // Browse-specific state (not in base class)
   List<MediaFilter> _filters = [];
   List<MediaSort> _sortOptions = [];
@@ -2154,8 +2144,15 @@ class _LibraryBrowseTabState extends BaseLibraryTabState<MediaItem, LibraryBrows
     }
 
     final hasAlphaBarReservation = rightPadding > 8.0;
+    // Child key remapping may run repeatedly while a large sliver updates.
+    // Resolve IDs once for this build rather than rescanning loadedItems on
+    // each callback.
+    final loadedIndices = <String, int>{};
+    for (final entry in loadedItems.entries) {
+      loadedIndices.putIfAbsent(entry.value.id, () => entry.key);
+    }
     return MediaCardSliverLayout(
-      findChildIndexCallback: (key) => _loadedIndexOfId((key as ValueKey<String>).value),
+      findChildIndexCallback: (key) => loadedIndices[(key as ValueKey<String>).value],
       viewMode: viewMode,
       itemCount: itemCount,
       density: libraryDensity,

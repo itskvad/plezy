@@ -29,6 +29,7 @@ import '../screens/video_player_screen.dart';
 import '../services/api_cache.dart';
 import '../services/agent_control_service.dart';
 import '../services/catalog/catalog_library_matcher.dart';
+import '../services/discover_home_cache.dart';
 import '../services/music/music_playback_service.dart';
 import '../services/music/music_playback_service_impl.dart';
 import '../services/music/music_session_store.dart';
@@ -171,13 +172,17 @@ class _ProfileSessionScreenState extends State<ProfileSessionScreen> {
               ChangeNotifierProvider(
                 create: (context) {
                   final provider = SeerrAccountProvider();
+                  final activeProfile = context.read<ActiveProfileProvider>();
                   provider.bindPlexTokenSupplier(
                     buildSeerrPlexTokenSupplier(
-                      activeProfile: context.read<ActiveProfileProvider>(),
+                      activeProfile: activeProfile,
                       connections: context.read<ConnectionRegistry>(),
                       profileConnections: context.read<ProfileConnectionRegistry>(),
                     ),
                   );
+                  provider.bindStartupReady(() async {
+                    await activeProfile.awaitBindingSettle();
+                  });
                   unawaited(
                     provider.onActiveProfileChanged(activeId).catchError((Object e, StackTrace s) {
                       appLogger.w('Seerr profile hydrate failed', error: e, stackTrace: s);
@@ -248,6 +253,8 @@ class _ProfileSessionScreenState extends State<ProfileSessionScreen> {
                     // up — same playback-quiet policy as the resume gate.
                     isRefreshBlocked: () => VideoPlayerScreenState.activeGlobalKey != null,
                     profileId: activeId,
+                    // Per-profile cold-start first paint for the home tab.
+                    homeCache: DiscoverHomeCache(),
                   );
                 },
               ),

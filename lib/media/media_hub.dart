@@ -44,6 +44,43 @@ class MediaHub {
     this.serverName,
   });
 
+  /// Serialized form used by the Discover first-paint snapshot. Items carry
+  /// their own `toJson`/`fromJson`, including the backend discriminator.
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      if (identifier != null) 'identifier': identifier,
+      'title': title,
+      'type': type,
+      'size': size,
+      'more': more,
+      if (libraryId != null) 'libraryId': libraryId,
+      if (serverId != null) 'serverId': serverId,
+      if (serverName != null) 'serverName': serverName,
+      'items': [for (final item in items) item.toJson()],
+    };
+  }
+
+  factory MediaHub.fromJson(Map<String, dynamic> json) {
+    final rawItems = json['items'];
+    return MediaHub(
+      id: json['id'] as String? ?? '',
+      identifier: json['identifier'] as String?,
+      title: json['title'] as String? ?? '',
+      type: json['type'] as String? ?? '',
+      size: (json['size'] as num?)?.toInt() ?? 0,
+      more: json['more'] as bool? ?? false,
+      libraryId: json['libraryId'] as String?,
+      serverId: json['serverId'] as String?,
+      serverName: json['serverName'] as String?,
+      items: [
+        if (rawItems is List)
+          for (final entry in rawItems)
+            if (entry is Map<String, dynamic>) MediaItem.fromJson(entry),
+      ],
+    );
+  }
+
   /// True for hubs that represent the user's resumable Continue Watching row.
   bool get isContinueWatchingHub => _anySemanticKey(_isContinueWatchingKey);
 

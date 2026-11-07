@@ -45,7 +45,7 @@ class AppearanceSettingsScreen extends StatelessWidget {
             _themeSelector(),
             if (AppIconSetting.isShown(context)) const AppIconSetting(),
             if (PlatformDetector.isAutomotive()) _displayScaleSelector(),
-            if (Platform.isAndroid) _visualEffectsSelector(context),
+            if (Platform.isAndroid || Platform.isWindows) _visualEffectsSelector(context),
           ],
         ),
 
@@ -345,7 +345,7 @@ class AppearanceSettingsScreen extends StatelessWidget {
       DialogOption(
         value: VisualEffectsSetting.auto,
         title: t.settings.visualEffectsAuto,
-        subtitle: t.settings.visualEffectsAutoDescription,
+        subtitle: Platform.isAndroid ? t.settings.visualEffectsAutoDescription : null,
       ),
       DialogOption(value: VisualEffectsSetting.full, title: t.settings.visualEffectsFull),
       DialogOption(

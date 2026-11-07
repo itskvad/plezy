@@ -94,15 +94,6 @@ abstract class PaginatedCardGridTabState<T extends Object, W extends BaseLibrary
     reconcileGridFocusNodes({for (final entry in loadedItems.entries) idOf(entry.value): entry.key});
   }
 
-  /// Index currently holding the item with [id], or null when it is no longer
-  /// loaded.
-  int? _loadedIndexOfId(String id) {
-    for (final entry in loadedItems.entries) {
-      if (idOf(entry.value) == id) return entry.key;
-    }
-    return null;
-  }
-
   @override
   Widget buildContent(List<T> items) {
     return SettingsBuilder(
@@ -133,11 +124,18 @@ abstract class PaginatedCardGridTabState<T extends Object, W extends BaseLibrary
   Widget _buildItemsSliver(ViewMode viewMode, int density, {required bool fullCardLayout}) {
     final shape = usesSquareCards ? CardShape.square : null;
     final useFullCardLayout = fullCardLayout && shape != CardShape.square;
+    // Sliver child reordering can ask for many key lookups during one layout.
+    // Build this index once per sliver build instead of scanning loadedItems
+    // for every child.
+    final loadedIndices = <String, int>{};
+    for (final entry in loadedItems.entries) {
+      loadedIndices.putIfAbsent(idOf(entry.value), () => entry.key);
+    }
     return MediaCardSliverLayout(
       viewMode: viewMode,
       itemCount: totalSize,
       density: density,
-      findChildIndexCallback: (key) => _loadedIndexOfId((key as ValueKey<String>).value),
+      findChildIndexCallback: (key) => loadedIndices[(key as ValueKey<String>).value],
       padding: _effectivePadding,
       fullBleedImage: useFullCardLayout,
       shape: shape,

@@ -47,9 +47,19 @@ class ConnectionBootstrap {
     final seededDevAccount = await seedFromDevTokenDefine();
     final hadLegacyPlexToken = (storage.getPlexToken() ?? '').isNotEmpty;
     final hadLegacyProfileState = _hasLegacyProfileState();
+    final alreadyMigrated = storage.prefs.getBool(_keyProfileMigrationV1Done) ?? false;
+    // Steady state: the one-shot bridges have run and no legacy state remains.
+    // Skip the connection/profile reads this used to do on every boot — they
+    // were pure no-op work on the startup path. Any legacy state (or a dev
+    // seed) still falls through to the full migration pass below.
+    if (alreadyMigrated && !hadLegacyPlexToken && !hadLegacyProfileState && !seededDevAccount) {
+      // Still drop a legacy server list left behind by an old install; the
+      // remove is a cheap pref delete and the rest of the pass is skipped.
+      await storage.clearServersList();
+      return;
+    }
     final migratedAccount = await migrateLegacyPlexAccount();
     final account = await _firstPlexAccount(migratedAccount);
-    final alreadyMigrated = storage.prefs.getBool(_keyProfileMigrationV1Done) ?? false;
     if (!alreadyMigrated) {
       if (account == null && (hadLegacyPlexToken || hadLegacyProfileState)) {
         appLogger.w('Migration: legacy profile state present but Plex account was not migrated; will retry later');

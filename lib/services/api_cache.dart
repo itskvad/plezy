@@ -114,6 +114,10 @@ abstract class ApiCache {
   /// joins on adjacent tables).
   AppDatabase get database => _db;
 
+  /// Payloads below this size decode inline; see [decodeCachedMediaRows] for
+  /// the same reasoning on the eagerly-decoded rows.
+  static const int _decodeIsolateThreshold = 32 * 1024;
+
   String _buildKey(ServerId serverId, String endpoint) {
     return '$serverId:$endpoint';
   }
@@ -121,9 +125,7 @@ abstract class ApiCache {
   Future<Map<String, dynamic>?> get(ServerId serverId, String endpoint) async {
     final key = _buildKey(serverId, endpoint);
     final result = await (_db.select(_db.apiCache)..where((t) => t.cacheKey.equals(key))).getSingleOrNull();
-    if (result != null) {
-      return await tryIsolateRun(() => jsonDecode(result.data) as Map<String, dynamic>);
-    }
+    if (result != null) return _decodeRow(result.data);
     return null;
   }
 
@@ -135,7 +137,16 @@ abstract class ApiCache {
     final key = _buildKey(serverId, endpoint);
     final result = await (_db.select(_db.apiCache)..where((t) => t.cacheKey.equals(key))).getSingleOrNull();
     if (result == null || DateTime.now().difference(result.cachedAt) > maxAge) return null;
-    return await tryIsolateRun(() => jsonDecode(result.data) as Map<String, dynamic>);
+    return _decodeRow(result.data);
+  }
+
+  /// Metadata rows are usually a few KB. Spawning an isolate per row made
+  /// cache hydration cost more than the decode it moved off the UI thread, so
+  /// only genuinely large payloads pay for one.
+  Future<Map<String, dynamic>?> _decodeRow(String data) {
+    Map<String, dynamic> decode() => jsonDecode(data) as Map<String, dynamic>;
+    if (data.length < _decodeIsolateThreshold) return Future<Map<String, dynamic>?>.value(decode());
+    return tryIsolateRun<Map<String, dynamic>?>(decode);
   }
 
   Future<void> put(ServerId serverId, String endpoint, Map<String, dynamic> data) async {
