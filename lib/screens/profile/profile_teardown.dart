@@ -45,6 +45,7 @@ class SessionTeardownScope {
   final MultiServerProvider multiServer;
   final HiddenLibrariesProvider? hiddenLibraries;
   final DiscoverProvider? discover;
+  final DiscoverHomeCache discoverHomeCache;
   final DownloadProvider downloads;
   final AppDatabase database;
   final StorageService storage;
@@ -70,6 +71,7 @@ class SessionTeardownScope {
       multiServer = context.read<MultiServerProvider>(),
       hiddenLibraries = context.read<HiddenLibrariesProvider?>(),
       discover = context.read<DiscoverProvider?>(),
+      discoverHomeCache = context.read<DiscoverHomeCache?>() ?? DiscoverHomeCache(),
       downloads = context.read<DownloadProvider>(),
       database = context.read<AppDatabase>(),
       storage = context.read<StorageService>(),
@@ -210,7 +212,7 @@ Future<void> deleteProfile(BuildContext context, Profile profile) async {
     await scope.storage.clearProfileLastUsed(profile.id);
     await scope.storage.clearUserScopedPreferencesForProfile(profile.id);
     // The profile id is gone for good; don't keep its home snapshot on disk.
-    await DiscoverHomeCache().clear(profile.id);
+    await scope.discoverHomeCache.clear(profile.id);
 
     await settleSessionAfterRemoval(scope, endedShelfOwner: endedOwner);
   });
@@ -317,7 +319,7 @@ Future<bool> confirmAndSignOutPlexAccount(BuildContext context, {required String
         await scope.database.deleteDownloadCollectionsForProfile(profileId);
         await scope.database.deleteWatchActionsForProfile(profileId);
         await scope.database.deleteMusicSessionForProfile(profileId);
-        await DiscoverHomeCache().clear(profileId);
+        await scope.discoverHomeCache.clear(profileId);
       }
 
       return settleSessionAfterRemoval(scope, rebindIfActiveKept: true, endedShelfOwner: endedOwner);
@@ -397,7 +399,7 @@ Future<void> logoutAllProfiles(BuildContext context) async {
   // Preserve pinned rows backing offline downloads; all session/API data is
   // volatile and must not cross into the next sign-in.
   await ApiCache.clearRegisteredVolatile();
-  await DiscoverHomeCache().clearAll();
+  await scope.discoverHomeCache.clearAll();
   await scope.hiddenLibraries?.refresh();
   playbackState.clearShuffle();
 

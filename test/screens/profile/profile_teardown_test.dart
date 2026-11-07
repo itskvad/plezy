@@ -5,7 +5,6 @@ import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:plezy/connection/connection.dart';
 import 'package:plezy/connection/connection_registry.dart';
 import 'package:plezy/database/app_database.dart';
@@ -24,6 +23,7 @@ import 'package:plezy/providers/download_provider.dart';
 import 'package:plezy/providers/multi_server_provider.dart';
 import 'package:plezy/providers/playback_state_provider.dart';
 import 'package:plezy/screens/profile/profile_teardown.dart';
+import 'package:plezy/services/discover_home_cache.dart';
 import 'package:plezy/services/plex_auth_service.dart';
 import 'package:plezy/services/credential_vault.dart';
 import 'package:plezy/services/multi_server_manager.dart';
@@ -31,7 +31,6 @@ import 'package:plezy/services/storage_service.dart';
 import 'package:plezy/services/system_shelf_service.dart';
 import 'package:provider/provider.dart';
 
-import '../../test_helpers/io_fakes.dart';
 import '../../test_helpers/multi_server_fixtures.dart';
 import '../../test_helpers/prefs.dart';
 
@@ -110,18 +109,14 @@ void main() {
   const channel = MethodChannel('test/profile_teardown_shelf');
   final messenger = TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
   late Directory temporaryRoot;
-  late PathProviderPlatform previousPathProvider;
 
   setUp(() async {
     resetSharedPreferencesForTest();
     CredentialVault.resetKeyForTesting();
     temporaryRoot = await Directory.systemTemp.createTemp('profile-teardown-test-');
-    previousPathProvider = PathProviderPlatform.instance;
-    PathProviderPlatform.instance = FakePathProvider(temporaryRoot);
   });
 
   tearDown(() async {
-    PathProviderPlatform.instance = previousPathProvider;
     if (await temporaryRoot.exists()) await temporaryRoot.delete(recursive: true);
     messenger.setMockMethodCallHandler(channel, null);
     SystemShelfService.debugOverrideInstance(null);
@@ -355,6 +350,7 @@ Future<_Harness> _pumpHarness(
         Provider<ConnectionRegistry>.value(value: connections),
         Provider<ProfileConnectionRegistry>.value(value: profileConnections),
         Provider<PlexHomeService>.value(value: plexHome),
+        Provider<DiscoverHomeCache>.value(value: DiscoverHomeCache(directoryProvider: () async => temporaryRoot)),
         ChangeNotifierProvider<ActiveProfileProvider>.value(value: active),
         Provider<ActiveProfileBinder>.value(value: _Binder(events)),
         ChangeNotifierProvider<MultiServerProvider>.value(value: multiServer),
