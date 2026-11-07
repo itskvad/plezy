@@ -351,7 +351,7 @@ Future<_Harness> _pumpHarness(
         Provider<ConnectionRegistry>.value(value: connections),
         Provider<ProfileConnectionRegistry>.value(value: profileConnections),
         Provider<PlexHomeService>.value(value: plexHome),
-        Provider<DiscoverHomeCache>.value(value: DiscoverHomeCache(directoryProvider: () async => temporaryRoot)),
+        Provider<DiscoverHomeCache?>.value(value: DiscoverHomeCache(directoryProvider: () async => temporaryRoot)),
         ChangeNotifierProvider<ActiveProfileProvider>.value(value: active),
         Provider<ActiveProfileBinder>.value(value: _Binder(events)),
         ChangeNotifierProvider<MultiServerProvider>.value(value: multiServer),
