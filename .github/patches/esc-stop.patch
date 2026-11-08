@@ -1,15 +1,998 @@
+diff --git a/lib/i18n/az.i18n.json b/lib/i18n/az.i18n.json
+index 36ed8cad7..0a903de92 100644
+--- a/lib/i18n/az.i18n.json
++++ b/lib/i18n/az.i18n.json
+@@ -466,6 +466,10 @@
+     "forceTvModeDescription": "TV interfeysini məcburi et. Avtomatik təyin etməyən cihazlar üçündür. Yenidən başlatma tələb olunur.",
+     "startInFullscreen": "Tam ekranda başlat",
+     "startInFullscreenDescription": "Plezy-ni açılışda tam ekran rejimində aç",
++    "htpcOptions": "HTPC options",
++    "htpcOptionsDescription": "Options for home theater PCs and remote controls",
++    "stopVideoOnEscape": "Stop video with Esc",
++    "stopVideoOnEscapeDescription": "Stop playback and return to the previous screen when Esc is pressed",
+     "exitFullscreenOnPlayerClose": "Oynadıcı bağlandıqda tam ekrandan çıx",
+     "exitFullscreenOnPlayerCloseDescription": "Video oynadıcını bağlayarkən avtomatik tam ekrandan çıx",
+     "autoHidePerformanceOverlay": "Məhsuldarlıq paneli avtomatik gizlənsin",
+diff --git a/lib/i18n/bg.i18n.json b/lib/i18n/bg.i18n.json
+index 752451e12..c84147fad 100644
+--- a/lib/i18n/bg.i18n.json
++++ b/lib/i18n/bg.i18n.json
+@@ -466,6 +466,10 @@
+     "forceTvModeDescription": "Принуди ТВ оформление. За устройства, които не се разпознават автоматично. Изисква рестарт.",
+     "startInFullscreen": "Стартирай на цял екран",
+     "startInFullscreenDescription": "Отваряй Plezy в режим цял екран при стартиране",
++    "htpcOptions": "HTPC options",
++    "htpcOptionsDescription": "Options for home theater PCs and remote controls",
++    "stopVideoOnEscape": "Stop video with Esc",
++    "stopVideoOnEscapeDescription": "Stop playback and return to the previous screen when Esc is pressed",
+     "exitFullscreenOnPlayerClose": "Изход от цял екран при затваряне на плейъра",
+     "exitFullscreenOnPlayerCloseDescription": "Автоматично излиза от режим цял екран при затваряне на видео плейъра",
+     "autoHidePerformanceOverlay": "Автоматично скриване на оверлея за производителност",
+diff --git a/lib/i18n/da.i18n.json b/lib/i18n/da.i18n.json
+index 6941a2b69..b3d3c15e7 100644
+--- a/lib/i18n/da.i18n.json
++++ b/lib/i18n/da.i18n.json
+@@ -466,6 +466,10 @@
+     "forceTvModeDescription": "Tving TV-layout. Til enheder, der ikke registreres automatisk. Kræver genstart.",
+     "startInFullscreen": "Start i fuldskærm",
+     "startInFullscreenDescription": "Åbn Plezy i fuldskærmstilstand ved opstart",
++    "htpcOptions": "HTPC options",
++    "htpcOptionsDescription": "Options for home theater PCs and remote controls",
++    "stopVideoOnEscape": "Stop video with Esc",
++    "stopVideoOnEscapeDescription": "Stop playback and return to the previous screen when Esc is pressed",
+     "exitFullscreenOnPlayerClose": "Forlad fuldskærm ved lukning af afspiller",
+     "exitFullscreenOnPlayerCloseDescription": "Afslut automatisk fuldskærm, når videoafspilleren lukkes",
+     "autoHidePerformanceOverlay": "Skjul ydelsesoverlay automatisk",
+diff --git a/lib/i18n/de.i18n.json b/lib/i18n/de.i18n.json
+index a108434af..052a788e7 100644
+--- a/lib/i18n/de.i18n.json
++++ b/lib/i18n/de.i18n.json
+@@ -466,6 +466,10 @@
+     "forceTvModeDescription": "TV-Layout erzwingen. Für Geräte ohne automatische Erkennung. Neustart erforderlich.",
+     "startInFullscreen": "Im Vollbildmodus starten",
+     "startInFullscreenDescription": "Plezy beim Start im Vollbildmodus öffnen",
++    "htpcOptions": "HTPC options",
++    "htpcOptionsDescription": "Options for home theater PCs and remote controls",
++    "stopVideoOnEscape": "Stop video with Esc",
++    "stopVideoOnEscapeDescription": "Stop playback and return to the previous screen when Esc is pressed",
+     "exitFullscreenOnPlayerClose": "Vollbild beim Schließen des Players beenden",
+     "exitFullscreenOnPlayerCloseDescription": "Vollbildmodus automatisch beenden, wenn der Videoplayer geschlossen wird",
+     "autoHidePerformanceOverlay": "Leistungsoverlay automatisch ausblenden",
+diff --git a/lib/i18n/en.i18n.json b/lib/i18n/en.i18n.json
+index 77278014c..bf05f1722 100644
+--- a/lib/i18n/en.i18n.json
++++ b/lib/i18n/en.i18n.json
+@@ -466,6 +466,10 @@
+     "forceTvModeDescription": "Force TV layout. For devices that don't auto-detect. Requires restart.",
+     "startInFullscreen": "Start in fullscreen",
+     "startInFullscreenDescription": "Open Plezy in fullscreen mode at launch",
++    "htpcOptions": "HTPC options",
++    "htpcOptionsDescription": "Options for home theater PCs and remote controls",
++    "stopVideoOnEscape": "Stop video with Esc",
++    "stopVideoOnEscapeDescription": "Stop playback and return to the previous screen when Esc is pressed",
+     "exitFullscreenOnPlayerClose": "Exit fullscreen on player close",
+     "exitFullscreenOnPlayerCloseDescription": "Automatically exit fullscreen when closing the video player",
+     "autoHidePerformanceOverlay": "Auto-Hide Performance Overlay",
+diff --git a/lib/i18n/es.i18n.json b/lib/i18n/es.i18n.json
+index 5e0a533b2..bdc6ce6c8 100644
+--- a/lib/i18n/es.i18n.json
++++ b/lib/i18n/es.i18n.json
+@@ -466,6 +466,10 @@
+     "forceTvModeDescription": "Forzar diseño TV. Para dispositivos que no lo detectan. Requiere reinicio.",
+     "startInFullscreen": "Iniciar en pantalla completa",
+     "startInFullscreenDescription": "Abrir Plezy en modo pantalla completa al iniciar",
++    "htpcOptions": "HTPC options",
++    "htpcOptionsDescription": "Options for home theater PCs and remote controls",
++    "stopVideoOnEscape": "Stop video with Esc",
++    "stopVideoOnEscapeDescription": "Stop playback and return to the previous screen when Esc is pressed",
+     "exitFullscreenOnPlayerClose": "Salir de pantalla completa al cerrar el reproductor",
+     "exitFullscreenOnPlayerCloseDescription": "Salir automáticamente del modo de pantalla completa al cerrar el reproductor de video",
+     "autoHidePerformanceOverlay": "Ocultar superposición de rendimiento automáticamente",
+diff --git a/lib/i18n/fr.i18n.json b/lib/i18n/fr.i18n.json
+index 3dc34ef23..d2db400a6 100644
+--- a/lib/i18n/fr.i18n.json
++++ b/lib/i18n/fr.i18n.json
+@@ -466,6 +466,10 @@
+     "forceTvModeDescription": "Forcer l’interface TV sur les appareils qui ne sont pas détectés automatiquement. Redémarrage requis.",
+     "startInFullscreen": "Démarrer en plein écran",
+     "startInFullscreenDescription": "Ouvrir Plezy en mode plein écran au lancement",
++    "htpcOptions": "HTPC options",
++    "htpcOptionsDescription": "Options for home theater PCs and remote controls",
++    "stopVideoOnEscape": "Stop video with Esc",
++    "stopVideoOnEscapeDescription": "Stop playback and return to the previous screen when Esc is pressed",
+     "exitFullscreenOnPlayerClose": "Quitter le plein écran à la fermeture du lecteur",
+     "exitFullscreenOnPlayerCloseDescription": "Quitter automatiquement le plein écran lors de la fermeture du lecteur vidéo",
+     "autoHidePerformanceOverlay": "Masquer automatiquement les données de performance",
+diff --git a/lib/i18n/hu.i18n.json b/lib/i18n/hu.i18n.json
+index 8246c1d19..ff4d7b976 100644
+--- a/lib/i18n/hu.i18n.json
++++ b/lib/i18n/hu.i18n.json
+@@ -466,6 +466,10 @@
+     "forceTvModeDescription": "TV-elrendezés kényszerítése az automatikus felismeréssel nem rendelkező eszközökön. Újraindítást igényel.",
+     "startInFullscreen": "Indítás teljes képernyőn",
+     "startInFullscreenDescription": "A Plezy megnyitása teljes képernyős módban indításkor",
++    "htpcOptions": "HTPC options",
++    "htpcOptionsDescription": "Options for home theater PCs and remote controls",
++    "stopVideoOnEscape": "Stop video with Esc",
++    "stopVideoOnEscapeDescription": "Stop playback and return to the previous screen when Esc is pressed",
+     "exitFullscreenOnPlayerClose": "Kilépés a teljes képernyőből a lejátszó bezárásakor",
+     "exitFullscreenOnPlayerCloseDescription": "Automatikus kilépés a teljes képernyőből a videólejátszó bezárásakor",
+     "autoHidePerformanceOverlay": "Teljesítményadatok automatikus elrejtése",
+diff --git a/lib/i18n/it.i18n.json b/lib/i18n/it.i18n.json
+index f56701fc0..be579a4d8 100644
+--- a/lib/i18n/it.i18n.json
++++ b/lib/i18n/it.i18n.json
+@@ -466,6 +466,10 @@
+     "forceTvModeDescription": "Forza il layout TV sui dispositivi che non vengono rilevati automaticamente. Richiede il riavvio.",
+     "startInFullscreen": "Avvia a schermo intero",
+     "startInFullscreenDescription": "Apri Plezy a schermo intero all'avvio",
++    "htpcOptions": "HTPC options",
++    "htpcOptionsDescription": "Options for home theater PCs and remote controls",
++    "stopVideoOnEscape": "Stop video with Esc",
++    "stopVideoOnEscapeDescription": "Stop playback and return to the previous screen when Esc is pressed",
+     "exitFullscreenOnPlayerClose": "Esci dalla modalità a schermo intero alla chiusura del lettore",
+     "exitFullscreenOnPlayerCloseDescription": "Esce automaticamente dalla modalità a schermo intero quando chiudi il lettore video",
+     "autoHidePerformanceOverlay": "Nascondi automaticamente il riquadro delle prestazioni",
+diff --git a/lib/i18n/ja.i18n.json b/lib/i18n/ja.i18n.json
+index eb18a4048..26846e145 100644
+--- a/lib/i18n/ja.i18n.json
++++ b/lib/i18n/ja.i18n.json
+@@ -466,6 +466,10 @@
+     "forceTvModeDescription": "TVレイアウトを強制します。自動検出しないデバイス向けです。再起動が必要です。",
+     "startInFullscreen": "全画面表示で起動",
+     "startInFullscreenDescription": "起動時にPlezyを全画面モードで開きます",
++    "htpcOptions": "HTPC options",
++    "htpcOptionsDescription": "Options for home theater PCs and remote controls",
++    "stopVideoOnEscape": "Stop video with Esc",
++    "stopVideoOnEscapeDescription": "Stop playback and return to the previous screen when Esc is pressed",
+     "exitFullscreenOnPlayerClose": "プレイヤーを閉じたときに全画面を終了",
+     "exitFullscreenOnPlayerCloseDescription": "ビデオプレイヤーを閉じたときに自動的に全画面モードを終了します",
+     "autoHidePerformanceOverlay": "パフォーマンスオーバーレイを自動非表示",
+diff --git a/lib/i18n/kk.i18n.json b/lib/i18n/kk.i18n.json
+index d19596f00..558e5aceb 100644
+--- a/lib/i18n/kk.i18n.json
++++ b/lib/i18n/kk.i18n.json
+@@ -466,6 +466,10 @@
+     "forceTvModeDescription": "TV интерфейсін мәжбүрлеу. Автоматты түрде анықталмайтын құрылғылар үшін. Қайта іске қосу қажет.",
+     "startInFullscreen": "Толық экранда бастау",
+     "startInFullscreenDescription": "Plezy-ді ашқанда толық экран режимінде ашу",
++    "htpcOptions": "HTPC options",
++    "htpcOptionsDescription": "Options for home theater PCs and remote controls",
++    "stopVideoOnEscape": "Stop video with Esc",
++    "stopVideoOnEscapeDescription": "Stop playback and return to the previous screen when Esc is pressed",
+     "exitFullscreenOnPlayerClose": "Ойнатқыш жабылғанда толық экраннан шығу",
+     "exitFullscreenOnPlayerCloseDescription": "Видео ойнатқышты жапқанда автоматты түрде толық экраннан шығу",
+     "autoHidePerformanceOverlay": "Өнімділік панелін авто-жасыру",
+diff --git a/lib/i18n/ko.i18n.json b/lib/i18n/ko.i18n.json
+index 6a12b2496..c5c2ce9f1 100644
+--- a/lib/i18n/ko.i18n.json
++++ b/lib/i18n/ko.i18n.json
+@@ -466,6 +466,10 @@
+     "forceTvModeDescription": "TV 레이아웃을 강제합니다. 자동 감지되지 않는 기기용입니다. 재시작이 필요합니다.",
+     "startInFullscreen": "전체 화면으로 시작",
+     "startInFullscreenDescription": "실행 시 Plezy를 전체 화면 모드로 엽니다",
++    "htpcOptions": "HTPC options",
++    "htpcOptionsDescription": "Options for home theater PCs and remote controls",
++    "stopVideoOnEscape": "Stop video with Esc",
++    "stopVideoOnEscapeDescription": "Stop playback and return to the previous screen when Esc is pressed",
+     "exitFullscreenOnPlayerClose": "플레이어를 닫을 때 전체 화면 종료",
+     "exitFullscreenOnPlayerCloseDescription": "비디오 플레이어를 닫을 때 자동으로 전체 화면을 종료합니다",
+     "autoHidePerformanceOverlay": "성능 오버레이 자동 숨기기",
+diff --git a/lib/i18n/nb.i18n.json b/lib/i18n/nb.i18n.json
+index 13fac40ad..26aac4b2e 100644
+--- a/lib/i18n/nb.i18n.json
++++ b/lib/i18n/nb.i18n.json
+@@ -466,6 +466,10 @@
+     "forceTvModeDescription": "Tving TV-oppsett. For enheter som ikke oppdages automatisk. Krever omstart.",
+     "startInFullscreen": "Start i fullskjerm",
+     "startInFullscreenDescription": "Åpne Plezy i fullskjermmodus ved oppstart",
++    "htpcOptions": "HTPC options",
++    "htpcOptionsDescription": "Options for home theater PCs and remote controls",
++    "stopVideoOnEscape": "Stop video with Esc",
++    "stopVideoOnEscapeDescription": "Stop playback and return to the previous screen when Esc is pressed",
+     "exitFullscreenOnPlayerClose": "Avslutt fullskjerm ved lukking av avspiller",
+     "exitFullscreenOnPlayerCloseDescription": "Avslutt fullskjerm automatisk når videospilleren lukkes",
+     "autoHidePerformanceOverlay": "Skjul ytelsesoverlegg automatisk",
+diff --git a/lib/i18n/nl.i18n.json b/lib/i18n/nl.i18n.json
+index a27c52d7d..5b8dda387 100644
+--- a/lib/i18n/nl.i18n.json
++++ b/lib/i18n/nl.i18n.json
+@@ -466,6 +466,10 @@
+     "forceTvModeDescription": "Dwing de tv-indeling af op apparaten zonder automatische detectie. Herstart vereist.",
+     "startInFullscreen": "Starten in volledig scherm",
+     "startInFullscreenDescription": "Open Plezy bij het starten in volledig scherm",
++    "htpcOptions": "HTPC options",
++    "htpcOptionsDescription": "Options for home theater PCs and remote controls",
++    "stopVideoOnEscape": "Stop video with Esc",
++    "stopVideoOnEscapeDescription": "Stop playback and return to the previous screen when Esc is pressed",
+     "exitFullscreenOnPlayerClose": "Volledig scherm verlaten bij sluiten van speler",
+     "exitFullscreenOnPlayerCloseDescription": "Verlaat automatisch de volledigschermmodus wanneer de videospeler wordt gesloten",
+     "autoHidePerformanceOverlay": "Prestatie-overlay automatisch verbergen",
+diff --git a/lib/i18n/pl.i18n.json b/lib/i18n/pl.i18n.json
+index 082c04d06..0d307ab2e 100644
+--- a/lib/i18n/pl.i18n.json
++++ b/lib/i18n/pl.i18n.json
+@@ -466,6 +466,10 @@
+     "forceTvModeDescription": "Wymuś układ telewizyjny na urządzeniach, które nie wykrywają go automatycznie. Wymaga ponownego uruchomienia.",
+     "startInFullscreen": "Uruchom na pełnym ekranie",
+     "startInFullscreenDescription": "Otwiera Plezy w trybie pełnoekranowym przy uruchomieniu",
++    "htpcOptions": "HTPC options",
++    "htpcOptionsDescription": "Options for home theater PCs and remote controls",
++    "stopVideoOnEscape": "Stop video with Esc",
++    "stopVideoOnEscapeDescription": "Stop playback and return to the previous screen when Esc is pressed",
+     "exitFullscreenOnPlayerClose": "Wyjdź z pełnego ekranu przy zamykaniu odtwarzacza",
+     "exitFullscreenOnPlayerCloseDescription": "Automatycznie wychodzi z trybu pełnoekranowego po zamknięciu odtwarzacza wideo",
+     "autoHidePerformanceOverlay": "Automatycznie ukrywaj nakładkę wydajności",
+diff --git a/lib/i18n/pt.i18n.json b/lib/i18n/pt.i18n.json
+index a86a90990..87a5aa6a5 100644
+--- a/lib/i18n/pt.i18n.json
++++ b/lib/i18n/pt.i18n.json
+@@ -466,6 +466,10 @@
+     "forceTvModeDescription": "Forçar o layout de TV em dispositivos sem detecção automática. Requer reiniciar o app.",
+     "startInFullscreen": "Iniciar em tela cheia",
+     "startInFullscreenDescription": "Abrir o Plezy em modo de tela cheia ao iniciar",
++    "htpcOptions": "HTPC options",
++    "htpcOptionsDescription": "Options for home theater PCs and remote controls",
++    "stopVideoOnEscape": "Stop video with Esc",
++    "stopVideoOnEscapeDescription": "Stop playback and return to the previous screen when Esc is pressed",
+     "exitFullscreenOnPlayerClose": "Sair da tela cheia ao fechar o reprodutor",
+     "exitFullscreenOnPlayerCloseDescription": "Sair automaticamente da tela cheia ao fechar o reprodutor de vídeo",
+     "autoHidePerformanceOverlay": "Ocultar automaticamente o painel de desempenho",
+diff --git a/lib/i18n/ru.i18n.json b/lib/i18n/ru.i18n.json
+index b5a10ec77..5599fce10 100644
+--- a/lib/i18n/ru.i18n.json
++++ b/lib/i18n/ru.i18n.json
+@@ -466,6 +466,10 @@
+     "forceTvModeDescription": "Принудительно включить ТВ-интерфейс. Для устройств без автоопределения. Требуется перезапуск.",
+     "startInFullscreen": "Запускать в полноэкранном режиме",
+     "startInFullscreenDescription": "Открывать Plezy в полноэкранном режиме при запуске",
++    "htpcOptions": "HTPC options",
++    "htpcOptionsDescription": "Options for home theater PCs and remote controls",
++    "stopVideoOnEscape": "Stop video with Esc",
++    "stopVideoOnEscapeDescription": "Stop playback and return to the previous screen when Esc is pressed",
+     "exitFullscreenOnPlayerClose": "Выходить из полноэкранного режима при закрытии плеера",
+     "exitFullscreenOnPlayerCloseDescription": "Автоматически выходить из полноэкранного режима при закрытии видеоплеера",
+     "autoHidePerformanceOverlay": "Автоскрытие оверлея производительности",
+diff --git a/lib/i18n/strings_az.g.dart b/lib/i18n/strings_az.g.dart
+index 29932aa64..e59a462ef 100644
+--- a/lib/i18n/strings_az.g.dart
++++ b/lib/i18n/strings_az.g.dart
+@@ -559,6 +559,10 @@ class _Translations$settings$az extends Translations$settings$en {
+ 	@override String get forceTvModeDescription => 'TV interfeysini məcburi et. Avtomatik təyin etməyən cihazlar üçündür. Yenidən başlatma tələb olunur.';
+ 	@override String get startInFullscreen => 'Tam ekranda başlat';
+ 	@override String get startInFullscreenDescription => 'Plezy-ni açılışda tam ekran rejimində aç';
++	@override String get htpcOptions => 'HTPC options';
++	@override String get htpcOptionsDescription => 'Options for home theater PCs and remote controls';
++	@override String get stopVideoOnEscape => 'Stop video with Esc';
++	@override String get stopVideoOnEscapeDescription => 'Stop playback and return to the previous screen when Esc is pressed';
+ 	@override String get exitFullscreenOnPlayerClose => 'Oynadıcı bağlandıqda tam ekrandan çıx';
+ 	@override String get exitFullscreenOnPlayerCloseDescription => 'Video oynadıcını bağlayarkən avtomatik tam ekrandan çıx';
+ 	@override String get autoHidePerformanceOverlay => 'Məhsuldarlıq paneli avtomatik gizlənsin';
+@@ -3842,6 +3846,10 @@ extension on TranslationsAz {
+ 			'settings.forceTvModeDescription' => 'TV interfeysini məcburi et. Avtomatik təyin etməyən cihazlar üçündür. Yenidən başlatma tələb olunur.',
+ 			'settings.startInFullscreen' => 'Tam ekranda başlat',
+ 			'settings.startInFullscreenDescription' => 'Plezy-ni açılışda tam ekran rejimində aç',
++			'settings.htpcOptions' => 'HTPC options',
++			'settings.htpcOptionsDescription' => 'Options for home theater PCs and remote controls',
++			'settings.stopVideoOnEscape' => 'Stop video with Esc',
++			'settings.stopVideoOnEscapeDescription' => 'Stop playback and return to the previous screen when Esc is pressed',
+ 			'settings.exitFullscreenOnPlayerClose' => 'Oynadıcı bağlandıqda tam ekrandan çıx',
+ 			'settings.exitFullscreenOnPlayerCloseDescription' => 'Video oynadıcını bağlayarkən avtomatik tam ekrandan çıx',
+ 			'settings.autoHidePerformanceOverlay' => 'Məhsuldarlıq paneli avtomatik gizlənsin',
+diff --git a/lib/i18n/strings_bg.g.dart b/lib/i18n/strings_bg.g.dart
+index 778e18dbb..60404b6d6 100644
+--- a/lib/i18n/strings_bg.g.dart
++++ b/lib/i18n/strings_bg.g.dart
+@@ -559,6 +559,10 @@ class _Translations$settings$bg extends Translations$settings$en {
+ 	@override String get forceTvModeDescription => 'Принуди ТВ оформление. За устройства, които не се разпознават автоматично. Изисква рестарт.';
+ 	@override String get startInFullscreen => 'Стартирай на цял екран';
+ 	@override String get startInFullscreenDescription => 'Отваряй Plezy в режим цял екран при стартиране';
++	@override String get htpcOptions => 'HTPC options';
++	@override String get htpcOptionsDescription => 'Options for home theater PCs and remote controls';
++	@override String get stopVideoOnEscape => 'Stop video with Esc';
++	@override String get stopVideoOnEscapeDescription => 'Stop playback and return to the previous screen when Esc is pressed';
+ 	@override String get exitFullscreenOnPlayerClose => 'Изход от цял екран при затваряне на плейъра';
+ 	@override String get exitFullscreenOnPlayerCloseDescription => 'Автоматично излиза от режим цял екран при затваряне на видео плейъра';
+ 	@override String get autoHidePerformanceOverlay => 'Автоматично скриване на оверлея за производителност';
+@@ -3842,6 +3846,10 @@ extension on TranslationsBg {
+ 			'settings.forceTvModeDescription' => 'Принуди ТВ оформление. За устройства, които не се разпознават автоматично. Изисква рестарт.',
+ 			'settings.startInFullscreen' => 'Стартирай на цял екран',
+ 			'settings.startInFullscreenDescription' => 'Отваряй Plezy в режим цял екран при стартиране',
++			'settings.htpcOptions' => 'HTPC options',
++			'settings.htpcOptionsDescription' => 'Options for home theater PCs and remote controls',
++			'settings.stopVideoOnEscape' => 'Stop video with Esc',
++			'settings.stopVideoOnEscapeDescription' => 'Stop playback and return to the previous screen when Esc is pressed',
+ 			'settings.exitFullscreenOnPlayerClose' => 'Изход от цял екран при затваряне на плейъра',
+ 			'settings.exitFullscreenOnPlayerCloseDescription' => 'Автоматично излиза от режим цял екран при затваряне на видео плейъра',
+ 			'settings.autoHidePerformanceOverlay' => 'Автоматично скриване на оверлея за производителност',
+diff --git a/lib/i18n/strings_da.g.dart b/lib/i18n/strings_da.g.dart
+index 7de20a765..13e0a16b4 100644
+--- a/lib/i18n/strings_da.g.dart
++++ b/lib/i18n/strings_da.g.dart
+@@ -559,6 +559,10 @@ class _Translations$settings$da extends Translations$settings$en {
+ 	@override String get forceTvModeDescription => 'Tving TV-layout. Til enheder, der ikke registreres automatisk. Kræver genstart.';
+ 	@override String get startInFullscreen => 'Start i fuldskærm';
+ 	@override String get startInFullscreenDescription => 'Åbn Plezy i fuldskærmstilstand ved opstart';
++	@override String get htpcOptions => 'HTPC options';
++	@override String get htpcOptionsDescription => 'Options for home theater PCs and remote controls';
++	@override String get stopVideoOnEscape => 'Stop video with Esc';
++	@override String get stopVideoOnEscapeDescription => 'Stop playback and return to the previous screen when Esc is pressed';
+ 	@override String get exitFullscreenOnPlayerClose => 'Forlad fuldskærm ved lukning af afspiller';
+ 	@override String get exitFullscreenOnPlayerCloseDescription => 'Afslut automatisk fuldskærm, når videoafspilleren lukkes';
+ 	@override String get autoHidePerformanceOverlay => 'Skjul ydelsesoverlay automatisk';
+@@ -3842,6 +3846,10 @@ extension on TranslationsDa {
+ 			'settings.forceTvModeDescription' => 'Tving TV-layout. Til enheder, der ikke registreres automatisk. Kræver genstart.',
+ 			'settings.startInFullscreen' => 'Start i fuldskærm',
+ 			'settings.startInFullscreenDescription' => 'Åbn Plezy i fuldskærmstilstand ved opstart',
++			'settings.htpcOptions' => 'HTPC options',
++			'settings.htpcOptionsDescription' => 'Options for home theater PCs and remote controls',
++			'settings.stopVideoOnEscape' => 'Stop video with Esc',
++			'settings.stopVideoOnEscapeDescription' => 'Stop playback and return to the previous screen when Esc is pressed',
+ 			'settings.exitFullscreenOnPlayerClose' => 'Forlad fuldskærm ved lukning af afspiller',
+ 			'settings.exitFullscreenOnPlayerCloseDescription' => 'Afslut automatisk fuldskærm, når videoafspilleren lukkes',
+ 			'settings.autoHidePerformanceOverlay' => 'Skjul ydelsesoverlay automatisk',
+diff --git a/lib/i18n/strings_de.g.dart b/lib/i18n/strings_de.g.dart
+index b769b6a8e..4f1c2c5f7 100644
+--- a/lib/i18n/strings_de.g.dart
++++ b/lib/i18n/strings_de.g.dart
+@@ -559,6 +559,10 @@ class _Translations$settings$de extends Translations$settings$en {
+ 	@override String get forceTvModeDescription => 'TV-Layout erzwingen. Für Geräte ohne automatische Erkennung. Neustart erforderlich.';
+ 	@override String get startInFullscreen => 'Im Vollbildmodus starten';
+ 	@override String get startInFullscreenDescription => 'Plezy beim Start im Vollbildmodus öffnen';
++	@override String get htpcOptions => 'HTPC options';
++	@override String get htpcOptionsDescription => 'Options for home theater PCs and remote controls';
++	@override String get stopVideoOnEscape => 'Stop video with Esc';
++	@override String get stopVideoOnEscapeDescription => 'Stop playback and return to the previous screen when Esc is pressed';
+ 	@override String get exitFullscreenOnPlayerClose => 'Vollbild beim Schließen des Players beenden';
+ 	@override String get exitFullscreenOnPlayerCloseDescription => 'Vollbildmodus automatisch beenden, wenn der Videoplayer geschlossen wird';
+ 	@override String get autoHidePerformanceOverlay => 'Leistungsoverlay automatisch ausblenden';
+@@ -3842,6 +3846,10 @@ extension on TranslationsDe {
+ 			'settings.forceTvModeDescription' => 'TV-Layout erzwingen. Für Geräte ohne automatische Erkennung. Neustart erforderlich.',
+ 			'settings.startInFullscreen' => 'Im Vollbildmodus starten',
+ 			'settings.startInFullscreenDescription' => 'Plezy beim Start im Vollbildmodus öffnen',
++			'settings.htpcOptions' => 'HTPC options',
++			'settings.htpcOptionsDescription' => 'Options for home theater PCs and remote controls',
++			'settings.stopVideoOnEscape' => 'Stop video with Esc',
++			'settings.stopVideoOnEscapeDescription' => 'Stop playback and return to the previous screen when Esc is pressed',
+ 			'settings.exitFullscreenOnPlayerClose' => 'Vollbild beim Schließen des Players beenden',
+ 			'settings.exitFullscreenOnPlayerCloseDescription' => 'Vollbildmodus automatisch beenden, wenn der Videoplayer geschlossen wird',
+ 			'settings.autoHidePerformanceOverlay' => 'Leistungsoverlay automatisch ausblenden',
+diff --git a/lib/i18n/strings_en.g.dart b/lib/i18n/strings_en.g.dart
+index 6f48f1358..82121e593 100644
+--- a/lib/i18n/strings_en.g.dart
++++ b/lib/i18n/strings_en.g.dart
+@@ -1345,6 +1345,10 @@ class Translations$settings$en {
+ 
+ 	/// en: 'Open Plezy in fullscreen mode at launch'
+ 	String get startInFullscreenDescription => 'Open Plezy in fullscreen mode at launch';
++	String get htpcOptions => 'HTPC options';
++	String get htpcOptionsDescription => 'Options for home theater PCs and remote controls';
++	String get stopVideoOnEscape => 'Stop video with Esc';
++	String get stopVideoOnEscapeDescription => 'Stop playback and return to the previous screen when Esc is pressed';
+ 
+ 	/// en: 'Exit fullscreen on player close'
+ 	String get exitFullscreenOnPlayerClose => 'Exit fullscreen on player close';
+@@ -8563,6 +8567,10 @@ extension on Translations {
+ 			'settings.forceTvModeDescription' => 'Force TV layout. For devices that don\'t auto-detect. Requires restart.',
+ 			'settings.startInFullscreen' => 'Start in fullscreen',
+ 			'settings.startInFullscreenDescription' => 'Open Plezy in fullscreen mode at launch',
++			'settings.htpcOptions' => 'HTPC options',
++			'settings.htpcOptionsDescription' => 'Options for home theater PCs and remote controls',
++			'settings.stopVideoOnEscape' => 'Stop video with Esc',
++			'settings.stopVideoOnEscapeDescription' => 'Stop playback and return to the previous screen when Esc is pressed',
+ 			'settings.exitFullscreenOnPlayerClose' => 'Exit fullscreen on player close',
+ 			'settings.exitFullscreenOnPlayerCloseDescription' => 'Automatically exit fullscreen when closing the video player',
+ 			'settings.autoHidePerformanceOverlay' => 'Auto-Hide Performance Overlay',
+diff --git a/lib/i18n/strings_es.g.dart b/lib/i18n/strings_es.g.dart
+index bed1fbaff..fd99b60f9 100644
+--- a/lib/i18n/strings_es.g.dart
++++ b/lib/i18n/strings_es.g.dart
+@@ -559,6 +559,10 @@ class _Translations$settings$es extends Translations$settings$en {
+ 	@override String get forceTvModeDescription => 'Forzar diseño TV. Para dispositivos que no lo detectan. Requiere reinicio.';
+ 	@override String get startInFullscreen => 'Iniciar en pantalla completa';
+ 	@override String get startInFullscreenDescription => 'Abrir Plezy en modo pantalla completa al iniciar';
++	@override String get htpcOptions => 'HTPC options';
++	@override String get htpcOptionsDescription => 'Options for home theater PCs and remote controls';
++	@override String get stopVideoOnEscape => 'Stop video with Esc';
++	@override String get stopVideoOnEscapeDescription => 'Stop playback and return to the previous screen when Esc is pressed';
+ 	@override String get exitFullscreenOnPlayerClose => 'Salir de pantalla completa al cerrar el reproductor';
+ 	@override String get exitFullscreenOnPlayerCloseDescription => 'Salir automáticamente del modo de pantalla completa al cerrar el reproductor de video';
+ 	@override String get autoHidePerformanceOverlay => 'Ocultar superposición de rendimiento automáticamente';
+@@ -3842,6 +3846,10 @@ extension on TranslationsEs {
+ 			'settings.forceTvModeDescription' => 'Forzar diseño TV. Para dispositivos que no lo detectan. Requiere reinicio.',
+ 			'settings.startInFullscreen' => 'Iniciar en pantalla completa',
+ 			'settings.startInFullscreenDescription' => 'Abrir Plezy en modo pantalla completa al iniciar',
++			'settings.htpcOptions' => 'HTPC options',
++			'settings.htpcOptionsDescription' => 'Options for home theater PCs and remote controls',
++			'settings.stopVideoOnEscape' => 'Stop video with Esc',
++			'settings.stopVideoOnEscapeDescription' => 'Stop playback and return to the previous screen when Esc is pressed',
+ 			'settings.exitFullscreenOnPlayerClose' => 'Salir de pantalla completa al cerrar el reproductor',
+ 			'settings.exitFullscreenOnPlayerCloseDescription' => 'Salir automáticamente del modo de pantalla completa al cerrar el reproductor de video',
+ 			'settings.autoHidePerformanceOverlay' => 'Ocultar superposición de rendimiento automáticamente',
+diff --git a/lib/i18n/strings_fr.g.dart b/lib/i18n/strings_fr.g.dart
+index a1c2114a8..58c09e58b 100644
+--- a/lib/i18n/strings_fr.g.dart
++++ b/lib/i18n/strings_fr.g.dart
+@@ -559,6 +559,10 @@ class _Translations$settings$fr extends Translations$settings$en {
+ 	@override String get forceTvModeDescription => 'Forcer l’interface TV sur les appareils qui ne sont pas détectés automatiquement. Redémarrage requis.';
+ 	@override String get startInFullscreen => 'Démarrer en plein écran';
+ 	@override String get startInFullscreenDescription => 'Ouvrir Plezy en mode plein écran au lancement';
++	@override String get htpcOptions => 'HTPC options';
++	@override String get htpcOptionsDescription => 'Options for home theater PCs and remote controls';
++	@override String get stopVideoOnEscape => 'Stop video with Esc';
++	@override String get stopVideoOnEscapeDescription => 'Stop playback and return to the previous screen when Esc is pressed';
+ 	@override String get exitFullscreenOnPlayerClose => 'Quitter le plein écran à la fermeture du lecteur';
+ 	@override String get exitFullscreenOnPlayerCloseDescription => 'Quitter automatiquement le plein écran lors de la fermeture du lecteur vidéo';
+ 	@override String get autoHidePerformanceOverlay => 'Masquer automatiquement les données de performance';
+@@ -3842,6 +3846,10 @@ extension on TranslationsFr {
+ 			'settings.forceTvModeDescription' => 'Forcer l’interface TV sur les appareils qui ne sont pas détectés automatiquement. Redémarrage requis.',
+ 			'settings.startInFullscreen' => 'Démarrer en plein écran',
+ 			'settings.startInFullscreenDescription' => 'Ouvrir Plezy en mode plein écran au lancement',
++			'settings.htpcOptions' => 'HTPC options',
++			'settings.htpcOptionsDescription' => 'Options for home theater PCs and remote controls',
++			'settings.stopVideoOnEscape' => 'Stop video with Esc',
++			'settings.stopVideoOnEscapeDescription' => 'Stop playback and return to the previous screen when Esc is pressed',
+ 			'settings.exitFullscreenOnPlayerClose' => 'Quitter le plein écran à la fermeture du lecteur',
+ 			'settings.exitFullscreenOnPlayerCloseDescription' => 'Quitter automatiquement le plein écran lors de la fermeture du lecteur vidéo',
+ 			'settings.autoHidePerformanceOverlay' => 'Masquer automatiquement les données de performance',
+diff --git a/lib/i18n/strings_hu.g.dart b/lib/i18n/strings_hu.g.dart
+index cb7af193f..3e81c22d5 100644
+--- a/lib/i18n/strings_hu.g.dart
++++ b/lib/i18n/strings_hu.g.dart
+@@ -559,6 +559,10 @@ class _Translations$settings$hu extends Translations$settings$en {
+ 	@override String get forceTvModeDescription => 'TV-elrendezés kényszerítése az automatikus felismeréssel nem rendelkező eszközökön. Újraindítást igényel.';
+ 	@override String get startInFullscreen => 'Indítás teljes képernyőn';
+ 	@override String get startInFullscreenDescription => 'A Plezy megnyitása teljes képernyős módban indításkor';
++	@override String get htpcOptions => 'HTPC options';
++	@override String get htpcOptionsDescription => 'Options for home theater PCs and remote controls';
++	@override String get stopVideoOnEscape => 'Stop video with Esc';
++	@override String get stopVideoOnEscapeDescription => 'Stop playback and return to the previous screen when Esc is pressed';
+ 	@override String get exitFullscreenOnPlayerClose => 'Kilépés a teljes képernyőből a lejátszó bezárásakor';
+ 	@override String get exitFullscreenOnPlayerCloseDescription => 'Automatikus kilépés a teljes képernyőből a videólejátszó bezárásakor';
+ 	@override String get autoHidePerformanceOverlay => 'Teljesítményadatok automatikus elrejtése';
+@@ -3842,6 +3846,10 @@ extension on TranslationsHu {
+ 			'settings.forceTvModeDescription' => 'TV-elrendezés kényszerítése az automatikus felismeréssel nem rendelkező eszközökön. Újraindítást igényel.',
+ 			'settings.startInFullscreen' => 'Indítás teljes képernyőn',
+ 			'settings.startInFullscreenDescription' => 'A Plezy megnyitása teljes képernyős módban indításkor',
++			'settings.htpcOptions' => 'HTPC options',
++			'settings.htpcOptionsDescription' => 'Options for home theater PCs and remote controls',
++			'settings.stopVideoOnEscape' => 'Stop video with Esc',
++			'settings.stopVideoOnEscapeDescription' => 'Stop playback and return to the previous screen when Esc is pressed',
+ 			'settings.exitFullscreenOnPlayerClose' => 'Kilépés a teljes képernyőből a lejátszó bezárásakor',
+ 			'settings.exitFullscreenOnPlayerCloseDescription' => 'Automatikus kilépés a teljes képernyőből a videólejátszó bezárásakor',
+ 			'settings.autoHidePerformanceOverlay' => 'Teljesítményadatok automatikus elrejtése',
+diff --git a/lib/i18n/strings_it.g.dart b/lib/i18n/strings_it.g.dart
+index 4778772c3..8073a82f2 100644
+--- a/lib/i18n/strings_it.g.dart
++++ b/lib/i18n/strings_it.g.dart
+@@ -559,6 +559,10 @@ class _Translations$settings$it extends Translations$settings$en {
+ 	@override String get forceTvModeDescription => 'Forza il layout TV sui dispositivi che non vengono rilevati automaticamente. Richiede il riavvio.';
+ 	@override String get startInFullscreen => 'Avvia a schermo intero';
+ 	@override String get startInFullscreenDescription => 'Apri Plezy a schermo intero all\'avvio';
++	@override String get htpcOptions => 'HTPC options';
++	@override String get htpcOptionsDescription => 'Options for home theater PCs and remote controls';
++	@override String get stopVideoOnEscape => 'Stop video with Esc';
++	@override String get stopVideoOnEscapeDescription => 'Stop playback and return to the previous screen when Esc is pressed';
+ 	@override String get exitFullscreenOnPlayerClose => 'Esci dalla modalità a schermo intero alla chiusura del lettore';
+ 	@override String get exitFullscreenOnPlayerCloseDescription => 'Esce automaticamente dalla modalità a schermo intero quando chiudi il lettore video';
+ 	@override String get autoHidePerformanceOverlay => 'Nascondi automaticamente il riquadro delle prestazioni';
+@@ -3842,6 +3846,10 @@ extension on TranslationsIt {
+ 			'settings.forceTvModeDescription' => 'Forza il layout TV sui dispositivi che non vengono rilevati automaticamente. Richiede il riavvio.',
+ 			'settings.startInFullscreen' => 'Avvia a schermo intero',
+ 			'settings.startInFullscreenDescription' => 'Apri Plezy a schermo intero all\'avvio',
++			'settings.htpcOptions' => 'HTPC options',
++			'settings.htpcOptionsDescription' => 'Options for home theater PCs and remote controls',
++			'settings.stopVideoOnEscape' => 'Stop video with Esc',
++			'settings.stopVideoOnEscapeDescription' => 'Stop playback and return to the previous screen when Esc is pressed',
+ 			'settings.exitFullscreenOnPlayerClose' => 'Esci dalla modalità a schermo intero alla chiusura del lettore',
+ 			'settings.exitFullscreenOnPlayerCloseDescription' => 'Esce automaticamente dalla modalità a schermo intero quando chiudi il lettore video',
+ 			'settings.autoHidePerformanceOverlay' => 'Nascondi automaticamente il riquadro delle prestazioni',
+diff --git a/lib/i18n/strings_ja.g.dart b/lib/i18n/strings_ja.g.dart
+index 6387410d7..0124fa05a 100644
+--- a/lib/i18n/strings_ja.g.dart
++++ b/lib/i18n/strings_ja.g.dart
+@@ -559,6 +559,10 @@ class _Translations$settings$ja extends Translations$settings$en {
+ 	@override String get forceTvModeDescription => 'TVレイアウトを強制します。自動検出しないデバイス向けです。再起動が必要です。';
+ 	@override String get startInFullscreen => '全画面表示で起動';
+ 	@override String get startInFullscreenDescription => '起動時にPlezyを全画面モードで開きます';
++	@override String get htpcOptions => 'HTPC options';
++	@override String get htpcOptionsDescription => 'Options for home theater PCs and remote controls';
++	@override String get stopVideoOnEscape => 'Stop video with Esc';
++	@override String get stopVideoOnEscapeDescription => 'Stop playback and return to the previous screen when Esc is pressed';
+ 	@override String get exitFullscreenOnPlayerClose => 'プレイヤーを閉じたときに全画面を終了';
+ 	@override String get exitFullscreenOnPlayerCloseDescription => 'ビデオプレイヤーを閉じたときに自動的に全画面モードを終了します';
+ 	@override String get autoHidePerformanceOverlay => 'パフォーマンスオーバーレイを自動非表示';
+@@ -3830,6 +3834,10 @@ extension on TranslationsJa {
+ 			'settings.forceTvModeDescription' => 'TVレイアウトを強制します。自動検出しないデバイス向けです。再起動が必要です。',
+ 			'settings.startInFullscreen' => '全画面表示で起動',
+ 			'settings.startInFullscreenDescription' => '起動時にPlezyを全画面モードで開きます',
++			'settings.htpcOptions' => 'HTPC options',
++			'settings.htpcOptionsDescription' => 'Options for home theater PCs and remote controls',
++			'settings.stopVideoOnEscape' => 'Stop video with Esc',
++			'settings.stopVideoOnEscapeDescription' => 'Stop playback and return to the previous screen when Esc is pressed',
+ 			'settings.exitFullscreenOnPlayerClose' => 'プレイヤーを閉じたときに全画面を終了',
+ 			'settings.exitFullscreenOnPlayerCloseDescription' => 'ビデオプレイヤーを閉じたときに自動的に全画面モードを終了します',
+ 			'settings.autoHidePerformanceOverlay' => 'パフォーマンスオーバーレイを自動非表示',
+diff --git a/lib/i18n/strings_kk.g.dart b/lib/i18n/strings_kk.g.dart
+index d3491d8d2..e95780e27 100644
+--- a/lib/i18n/strings_kk.g.dart
++++ b/lib/i18n/strings_kk.g.dart
+@@ -559,6 +559,10 @@ class _Translations$settings$kk extends Translations$settings$en {
+ 	@override String get forceTvModeDescription => 'TV интерфейсін мәжбүрлеу. Автоматты түрде анықталмайтын құрылғылар үшін. Қайта іске қосу қажет.';
+ 	@override String get startInFullscreen => 'Толық экранда бастау';
+ 	@override String get startInFullscreenDescription => 'Plezy-ді ашқанда толық экран режимінде ашу';
++	@override String get htpcOptions => 'HTPC options';
++	@override String get htpcOptionsDescription => 'Options for home theater PCs and remote controls';
++	@override String get stopVideoOnEscape => 'Stop video with Esc';
++	@override String get stopVideoOnEscapeDescription => 'Stop playback and return to the previous screen when Esc is pressed';
+ 	@override String get exitFullscreenOnPlayerClose => 'Ойнатқыш жабылғанда толық экраннан шығу';
+ 	@override String get exitFullscreenOnPlayerCloseDescription => 'Видео ойнатқышты жапқанда автоматты түрде толық экраннан шығу';
+ 	@override String get autoHidePerformanceOverlay => 'Өнімділік панелін авто-жасыру';
+@@ -3842,6 +3846,10 @@ extension on TranslationsKk {
+ 			'settings.forceTvModeDescription' => 'TV интерфейсін мәжбүрлеу. Автоматты түрде анықталмайтын құрылғылар үшін. Қайта іске қосу қажет.',
+ 			'settings.startInFullscreen' => 'Толық экранда бастау',
+ 			'settings.startInFullscreenDescription' => 'Plezy-ді ашқанда толық экран режимінде ашу',
++			'settings.htpcOptions' => 'HTPC options',
++			'settings.htpcOptionsDescription' => 'Options for home theater PCs and remote controls',
++			'settings.stopVideoOnEscape' => 'Stop video with Esc',
++			'settings.stopVideoOnEscapeDescription' => 'Stop playback and return to the previous screen when Esc is pressed',
+ 			'settings.exitFullscreenOnPlayerClose' => 'Ойнатқыш жабылғанда толық экраннан шығу',
+ 			'settings.exitFullscreenOnPlayerCloseDescription' => 'Видео ойнатқышты жапқанда автоматты түрде толық экраннан шығу',
+ 			'settings.autoHidePerformanceOverlay' => 'Өнімділік панелін авто-жасыру',
+diff --git a/lib/i18n/strings_ko.g.dart b/lib/i18n/strings_ko.g.dart
+index 99af72e8b..cf1736308 100644
+--- a/lib/i18n/strings_ko.g.dart
++++ b/lib/i18n/strings_ko.g.dart
+@@ -559,6 +559,10 @@ class _Translations$settings$ko extends Translations$settings$en {
+ 	@override String get forceTvModeDescription => 'TV 레이아웃을 강제합니다. 자동 감지되지 않는 기기용입니다. 재시작이 필요합니다.';
+ 	@override String get startInFullscreen => '전체 화면으로 시작';
+ 	@override String get startInFullscreenDescription => '실행 시 Plezy를 전체 화면 모드로 엽니다';
++	@override String get htpcOptions => 'HTPC options';
++	@override String get htpcOptionsDescription => 'Options for home theater PCs and remote controls';
++	@override String get stopVideoOnEscape => 'Stop video with Esc';
++	@override String get stopVideoOnEscapeDescription => 'Stop playback and return to the previous screen when Esc is pressed';
+ 	@override String get exitFullscreenOnPlayerClose => '플레이어를 닫을 때 전체 화면 종료';
+ 	@override String get exitFullscreenOnPlayerCloseDescription => '비디오 플레이어를 닫을 때 자동으로 전체 화면을 종료합니다';
+ 	@override String get autoHidePerformanceOverlay => '성능 오버레이 자동 숨기기';
+@@ -3830,6 +3834,10 @@ extension on TranslationsKo {
+ 			'settings.forceTvModeDescription' => 'TV 레이아웃을 강제합니다. 자동 감지되지 않는 기기용입니다. 재시작이 필요합니다.',
+ 			'settings.startInFullscreen' => '전체 화면으로 시작',
+ 			'settings.startInFullscreenDescription' => '실행 시 Plezy를 전체 화면 모드로 엽니다',
++			'settings.htpcOptions' => 'HTPC options',
++			'settings.htpcOptionsDescription' => 'Options for home theater PCs and remote controls',
++			'settings.stopVideoOnEscape' => 'Stop video with Esc',
++			'settings.stopVideoOnEscapeDescription' => 'Stop playback and return to the previous screen when Esc is pressed',
+ 			'settings.exitFullscreenOnPlayerClose' => '플레이어를 닫을 때 전체 화면 종료',
+ 			'settings.exitFullscreenOnPlayerCloseDescription' => '비디오 플레이어를 닫을 때 자동으로 전체 화면을 종료합니다',
+ 			'settings.autoHidePerformanceOverlay' => '성능 오버레이 자동 숨기기',
+diff --git a/lib/i18n/strings_nb.g.dart b/lib/i18n/strings_nb.g.dart
+index 50f2f37e9..6248ccfca 100644
+--- a/lib/i18n/strings_nb.g.dart
++++ b/lib/i18n/strings_nb.g.dart
+@@ -559,6 +559,10 @@ class _Translations$settings$nb extends Translations$settings$en {
+ 	@override String get forceTvModeDescription => 'Tving TV-oppsett. For enheter som ikke oppdages automatisk. Krever omstart.';
+ 	@override String get startInFullscreen => 'Start i fullskjerm';
+ 	@override String get startInFullscreenDescription => 'Åpne Plezy i fullskjermmodus ved oppstart';
++	@override String get htpcOptions => 'HTPC options';
++	@override String get htpcOptionsDescription => 'Options for home theater PCs and remote controls';
++	@override String get stopVideoOnEscape => 'Stop video with Esc';
++	@override String get stopVideoOnEscapeDescription => 'Stop playback and return to the previous screen when Esc is pressed';
+ 	@override String get exitFullscreenOnPlayerClose => 'Avslutt fullskjerm ved lukking av avspiller';
+ 	@override String get exitFullscreenOnPlayerCloseDescription => 'Avslutt fullskjerm automatisk når videospilleren lukkes';
+ 	@override String get autoHidePerformanceOverlay => 'Skjul ytelsesoverlegg automatisk';
+@@ -3842,6 +3846,10 @@ extension on TranslationsNb {
+ 			'settings.forceTvModeDescription' => 'Tving TV-oppsett. For enheter som ikke oppdages automatisk. Krever omstart.',
+ 			'settings.startInFullscreen' => 'Start i fullskjerm',
+ 			'settings.startInFullscreenDescription' => 'Åpne Plezy i fullskjermmodus ved oppstart',
++			'settings.htpcOptions' => 'HTPC options',
++			'settings.htpcOptionsDescription' => 'Options for home theater PCs and remote controls',
++			'settings.stopVideoOnEscape' => 'Stop video with Esc',
++			'settings.stopVideoOnEscapeDescription' => 'Stop playback and return to the previous screen when Esc is pressed',
+ 			'settings.exitFullscreenOnPlayerClose' => 'Avslutt fullskjerm ved lukking av avspiller',
+ 			'settings.exitFullscreenOnPlayerCloseDescription' => 'Avslutt fullskjerm automatisk når videospilleren lukkes',
+ 			'settings.autoHidePerformanceOverlay' => 'Skjul ytelsesoverlegg automatisk',
+diff --git a/lib/i18n/strings_nl.g.dart b/lib/i18n/strings_nl.g.dart
+index 35f347672..23076c025 100644
+--- a/lib/i18n/strings_nl.g.dart
++++ b/lib/i18n/strings_nl.g.dart
+@@ -559,6 +559,10 @@ class _Translations$settings$nl extends Translations$settings$en {
+ 	@override String get forceTvModeDescription => 'Dwing de tv-indeling af op apparaten zonder automatische detectie. Herstart vereist.';
+ 	@override String get startInFullscreen => 'Starten in volledig scherm';
+ 	@override String get startInFullscreenDescription => 'Open Plezy bij het starten in volledig scherm';
++	@override String get htpcOptions => 'HTPC options';
++	@override String get htpcOptionsDescription => 'Options for home theater PCs and remote controls';
++	@override String get stopVideoOnEscape => 'Stop video with Esc';
++	@override String get stopVideoOnEscapeDescription => 'Stop playback and return to the previous screen when Esc is pressed';
+ 	@override String get exitFullscreenOnPlayerClose => 'Volledig scherm verlaten bij sluiten van speler';
+ 	@override String get exitFullscreenOnPlayerCloseDescription => 'Verlaat automatisch de volledigschermmodus wanneer de videospeler wordt gesloten';
+ 	@override String get autoHidePerformanceOverlay => 'Prestatie-overlay automatisch verbergen';
+@@ -3842,6 +3846,10 @@ extension on TranslationsNl {
+ 			'settings.forceTvModeDescription' => 'Dwing de tv-indeling af op apparaten zonder automatische detectie. Herstart vereist.',
+ 			'settings.startInFullscreen' => 'Starten in volledig scherm',
+ 			'settings.startInFullscreenDescription' => 'Open Plezy bij het starten in volledig scherm',
++			'settings.htpcOptions' => 'HTPC options',
++			'settings.htpcOptionsDescription' => 'Options for home theater PCs and remote controls',
++			'settings.stopVideoOnEscape' => 'Stop video with Esc',
++			'settings.stopVideoOnEscapeDescription' => 'Stop playback and return to the previous screen when Esc is pressed',
+ 			'settings.exitFullscreenOnPlayerClose' => 'Volledig scherm verlaten bij sluiten van speler',
+ 			'settings.exitFullscreenOnPlayerCloseDescription' => 'Verlaat automatisch de volledigschermmodus wanneer de videospeler wordt gesloten',
+ 			'settings.autoHidePerformanceOverlay' => 'Prestatie-overlay automatisch verbergen',
+diff --git a/lib/i18n/strings_pl.g.dart b/lib/i18n/strings_pl.g.dart
+index e10f5d315..a0b659015 100644
+--- a/lib/i18n/strings_pl.g.dart
++++ b/lib/i18n/strings_pl.g.dart
+@@ -559,6 +559,10 @@ class _Translations$settings$pl extends Translations$settings$en {
+ 	@override String get forceTvModeDescription => 'Wymuś układ telewizyjny na urządzeniach, które nie wykrywają go automatycznie. Wymaga ponownego uruchomienia.';
+ 	@override String get startInFullscreen => 'Uruchom na pełnym ekranie';
+ 	@override String get startInFullscreenDescription => 'Otwiera Plezy w trybie pełnoekranowym przy uruchomieniu';
++	@override String get htpcOptions => 'HTPC options';
++	@override String get htpcOptionsDescription => 'Options for home theater PCs and remote controls';
++	@override String get stopVideoOnEscape => 'Stop video with Esc';
++	@override String get stopVideoOnEscapeDescription => 'Stop playback and return to the previous screen when Esc is pressed';
+ 	@override String get exitFullscreenOnPlayerClose => 'Wyjdź z pełnego ekranu przy zamykaniu odtwarzacza';
+ 	@override String get exitFullscreenOnPlayerCloseDescription => 'Automatycznie wychodzi z trybu pełnoekranowego po zamknięciu odtwarzacza wideo';
+ 	@override String get autoHidePerformanceOverlay => 'Automatycznie ukrywaj nakładkę wydajności';
+@@ -3866,6 +3870,10 @@ extension on TranslationsPl {
+ 			'settings.forceTvModeDescription' => 'Wymuś układ telewizyjny na urządzeniach, które nie wykrywają go automatycznie. Wymaga ponownego uruchomienia.',
+ 			'settings.startInFullscreen' => 'Uruchom na pełnym ekranie',
+ 			'settings.startInFullscreenDescription' => 'Otwiera Plezy w trybie pełnoekranowym przy uruchomieniu',
++			'settings.htpcOptions' => 'HTPC options',
++			'settings.htpcOptionsDescription' => 'Options for home theater PCs and remote controls',
++			'settings.stopVideoOnEscape' => 'Stop video with Esc',
++			'settings.stopVideoOnEscapeDescription' => 'Stop playback and return to the previous screen when Esc is pressed',
+ 			'settings.exitFullscreenOnPlayerClose' => 'Wyjdź z pełnego ekranu przy zamykaniu odtwarzacza',
+ 			'settings.exitFullscreenOnPlayerCloseDescription' => 'Automatycznie wychodzi z trybu pełnoekranowego po zamknięciu odtwarzacza wideo',
+ 			'settings.autoHidePerformanceOverlay' => 'Automatycznie ukrywaj nakładkę wydajności',
+diff --git a/lib/i18n/strings_pt.g.dart b/lib/i18n/strings_pt.g.dart
+index 5203522a3..43ec03879 100644
+--- a/lib/i18n/strings_pt.g.dart
++++ b/lib/i18n/strings_pt.g.dart
+@@ -559,6 +559,10 @@ class _Translations$settings$pt extends Translations$settings$en {
+ 	@override String get forceTvModeDescription => 'Forçar o layout de TV em dispositivos sem detecção automática. Requer reiniciar o app.';
+ 	@override String get startInFullscreen => 'Iniciar em tela cheia';
+ 	@override String get startInFullscreenDescription => 'Abrir o Plezy em modo de tela cheia ao iniciar';
++	@override String get htpcOptions => 'HTPC options';
++	@override String get htpcOptionsDescription => 'Options for home theater PCs and remote controls';
++	@override String get stopVideoOnEscape => 'Stop video with Esc';
++	@override String get stopVideoOnEscapeDescription => 'Stop playback and return to the previous screen when Esc is pressed';
+ 	@override String get exitFullscreenOnPlayerClose => 'Sair da tela cheia ao fechar o reprodutor';
+ 	@override String get exitFullscreenOnPlayerCloseDescription => 'Sair automaticamente da tela cheia ao fechar o reprodutor de vídeo';
+ 	@override String get autoHidePerformanceOverlay => 'Ocultar automaticamente o painel de desempenho';
+@@ -3842,6 +3846,10 @@ extension on TranslationsPt {
+ 			'settings.forceTvModeDescription' => 'Forçar o layout de TV em dispositivos sem detecção automática. Requer reiniciar o app.',
+ 			'settings.startInFullscreen' => 'Iniciar em tela cheia',
+ 			'settings.startInFullscreenDescription' => 'Abrir o Plezy em modo de tela cheia ao iniciar',
++			'settings.htpcOptions' => 'HTPC options',
++			'settings.htpcOptionsDescription' => 'Options for home theater PCs and remote controls',
++			'settings.stopVideoOnEscape' => 'Stop video with Esc',
++			'settings.stopVideoOnEscapeDescription' => 'Stop playback and return to the previous screen when Esc is pressed',
+ 			'settings.exitFullscreenOnPlayerClose' => 'Sair da tela cheia ao fechar o reprodutor',
+ 			'settings.exitFullscreenOnPlayerCloseDescription' => 'Sair automaticamente da tela cheia ao fechar o reprodutor de vídeo',
+ 			'settings.autoHidePerformanceOverlay' => 'Ocultar automaticamente o painel de desempenho',
+diff --git a/lib/i18n/strings_ru.g.dart b/lib/i18n/strings_ru.g.dart
+index bd1a0156d..c929d0b0b 100644
+--- a/lib/i18n/strings_ru.g.dart
++++ b/lib/i18n/strings_ru.g.dart
+@@ -559,6 +559,10 @@ class _Translations$settings$ru extends Translations$settings$en {
+ 	@override String get forceTvModeDescription => 'Принудительно включить ТВ-интерфейс. Для устройств без автоопределения. Требуется перезапуск.';
+ 	@override String get startInFullscreen => 'Запускать в полноэкранном режиме';
+ 	@override String get startInFullscreenDescription => 'Открывать Plezy в полноэкранном режиме при запуске';
++	@override String get htpcOptions => 'HTPC options';
++	@override String get htpcOptionsDescription => 'Options for home theater PCs and remote controls';
++	@override String get stopVideoOnEscape => 'Stop video with Esc';
++	@override String get stopVideoOnEscapeDescription => 'Stop playback and return to the previous screen when Esc is pressed';
+ 	@override String get exitFullscreenOnPlayerClose => 'Выходить из полноэкранного режима при закрытии плеера';
+ 	@override String get exitFullscreenOnPlayerCloseDescription => 'Автоматически выходить из полноэкранного режима при закрытии видеоплеера';
+ 	@override String get autoHidePerformanceOverlay => 'Автоскрытие оверлея производительности';
+@@ -3866,6 +3870,10 @@ extension on TranslationsRu {
+ 			'settings.forceTvModeDescription' => 'Принудительно включить ТВ-интерфейс. Для устройств без автоопределения. Требуется перезапуск.',
+ 			'settings.startInFullscreen' => 'Запускать в полноэкранном режиме',
+ 			'settings.startInFullscreenDescription' => 'Открывать Plezy в полноэкранном режиме при запуске',
++			'settings.htpcOptions' => 'HTPC options',
++			'settings.htpcOptionsDescription' => 'Options for home theater PCs and remote controls',
++			'settings.stopVideoOnEscape' => 'Stop video with Esc',
++			'settings.stopVideoOnEscapeDescription' => 'Stop playback and return to the previous screen when Esc is pressed',
+ 			'settings.exitFullscreenOnPlayerClose' => 'Выходить из полноэкранного режима при закрытии плеера',
+ 			'settings.exitFullscreenOnPlayerCloseDescription' => 'Автоматически выходить из полноэкранного режима при закрытии видеоплеера',
+ 			'settings.autoHidePerformanceOverlay' => 'Автоскрытие оверлея производительности',
+diff --git a/lib/i18n/strings_sv.g.dart b/lib/i18n/strings_sv.g.dart
+index ea9bbc828..ab3543388 100644
+--- a/lib/i18n/strings_sv.g.dart
++++ b/lib/i18n/strings_sv.g.dart
+@@ -559,6 +559,10 @@ class _Translations$settings$sv extends Translations$settings$en {
+ 	@override String get forceTvModeDescription => 'Tvinga TV-layout. För enheter som inte upptäcks automatiskt. Kräver omstart.';
+ 	@override String get startInFullscreen => 'Starta i helskärm';
+ 	@override String get startInFullscreenDescription => 'Öppna Plezy i helskärm vid start';
++	@override String get htpcOptions => 'HTPC options';
++	@override String get htpcOptionsDescription => 'Options for home theater PCs and remote controls';
++	@override String get stopVideoOnEscape => 'Stop video with Esc';
++	@override String get stopVideoOnEscapeDescription => 'Stop playback and return to the previous screen when Esc is pressed';
+ 	@override String get exitFullscreenOnPlayerClose => 'Avsluta helskärm vid stängning av spelare';
+ 	@override String get exitFullscreenOnPlayerCloseDescription => 'Avslutar automatiskt helskärmsläge när videospelaren stängs';
+ 	@override String get autoHidePerformanceOverlay => 'Dölj prestandainformation automatiskt';
+@@ -3842,6 +3846,10 @@ extension on TranslationsSv {
+ 			'settings.forceTvModeDescription' => 'Tvinga TV-layout. För enheter som inte upptäcks automatiskt. Kräver omstart.',
+ 			'settings.startInFullscreen' => 'Starta i helskärm',
+ 			'settings.startInFullscreenDescription' => 'Öppna Plezy i helskärm vid start',
++			'settings.htpcOptions' => 'HTPC options',
++			'settings.htpcOptionsDescription' => 'Options for home theater PCs and remote controls',
++			'settings.stopVideoOnEscape' => 'Stop video with Esc',
++			'settings.stopVideoOnEscapeDescription' => 'Stop playback and return to the previous screen when Esc is pressed',
+ 			'settings.exitFullscreenOnPlayerClose' => 'Avsluta helskärm vid stängning av spelare',
+ 			'settings.exitFullscreenOnPlayerCloseDescription' => 'Avslutar automatiskt helskärmsläge när videospelaren stängs',
+ 			'settings.autoHidePerformanceOverlay' => 'Dölj prestandainformation automatiskt',
+diff --git a/lib/i18n/strings_tr.g.dart b/lib/i18n/strings_tr.g.dart
+index 80670e8c1..487ecbf3d 100644
+--- a/lib/i18n/strings_tr.g.dart
++++ b/lib/i18n/strings_tr.g.dart
+@@ -559,6 +559,10 @@ class _Translations$settings$tr extends Translations$settings$en {
+ 	@override String get forceTvModeDescription => 'TV düzenini zorla. Otomatik algılamayan cihazlar içindir. Yeniden başlatma gerektirir.';
+ 	@override String get startInFullscreen => 'Tam ekranda başlat';
+ 	@override String get startInFullscreenDescription => 'Plezy\'yi açılışta tam ekran modunda aç';
++	@override String get htpcOptions => 'HTPC options';
++	@override String get htpcOptionsDescription => 'Options for home theater PCs and remote controls';
++	@override String get stopVideoOnEscape => 'Stop video with Esc';
++	@override String get stopVideoOnEscapeDescription => 'Stop playback and return to the previous screen when Esc is pressed';
+ 	@override String get exitFullscreenOnPlayerClose => 'Oynatıcı kapandığında tam ekrandan çık';
+ 	@override String get exitFullscreenOnPlayerCloseDescription => 'Video oynatıcıyı kapatırken otomatik olarak tam ekrandan çık';
+ 	@override String get autoHidePerformanceOverlay => 'Performans Katmanını Otomatik Gizle';
+@@ -3842,6 +3846,10 @@ extension on TranslationsTr {
+ 			'settings.forceTvModeDescription' => 'TV düzenini zorla. Otomatik algılamayan cihazlar içindir. Yeniden başlatma gerektirir.',
+ 			'settings.startInFullscreen' => 'Tam ekranda başlat',
+ 			'settings.startInFullscreenDescription' => 'Plezy\'yi açılışta tam ekran modunda aç',
++			'settings.htpcOptions' => 'HTPC options',
++			'settings.htpcOptionsDescription' => 'Options for home theater PCs and remote controls',
++			'settings.stopVideoOnEscape' => 'Stop video with Esc',
++			'settings.stopVideoOnEscapeDescription' => 'Stop playback and return to the previous screen when Esc is pressed',
+ 			'settings.exitFullscreenOnPlayerClose' => 'Oynatıcı kapandığında tam ekrandan çık',
+ 			'settings.exitFullscreenOnPlayerCloseDescription' => 'Video oynatıcıyı kapatırken otomatik olarak tam ekrandan çık',
+ 			'settings.autoHidePerformanceOverlay' => 'Performans Katmanını Otomatik Gizle',
+diff --git a/lib/i18n/strings_uz.g.dart b/lib/i18n/strings_uz.g.dart
+index ad944c107..8da1087d7 100644
+--- a/lib/i18n/strings_uz.g.dart
++++ b/lib/i18n/strings_uz.g.dart
+@@ -559,6 +559,10 @@ class _Translations$settings$uz extends Translations$settings$en {
+ 	@override String get forceTvModeDescription => 'TV interfeysini majburiy yoqish. Avtomatik aniqlanmaydigan qurilmalar uchun. Qayta ishga tushirish talab qilinadi.';
+ 	@override String get startInFullscreen => 'Toʻliq ekranda boshlash';
+ 	@override String get startInFullscreenDescription => 'Plezy-ni ochganda toʻliq ekran rejimida ochish';
++	@override String get htpcOptions => 'HTPC options';
++	@override String get htpcOptionsDescription => 'Options for home theater PCs and remote controls';
++	@override String get stopVideoOnEscape => 'Stop video with Esc';
++	@override String get stopVideoOnEscapeDescription => 'Stop playback and return to the previous screen when Esc is pressed';
+ 	@override String get exitFullscreenOnPlayerClose => 'Pleyer yopilganda toʻliq ekrandan chiqish';
+ 	@override String get exitFullscreenOnPlayerCloseDescription => 'Video pleyerni yopganda avtomatik ravishda toʻliq ekrandan chiqish';
+ 	@override String get autoHidePerformanceOverlay => 'Unumdorlik panelini avto-yashirish';
+@@ -3842,6 +3846,10 @@ extension on TranslationsUz {
+ 			'settings.forceTvModeDescription' => 'TV interfeysini majburiy yoqish. Avtomatik aniqlanmaydigan qurilmalar uchun. Qayta ishga tushirish talab qilinadi.',
+ 			'settings.startInFullscreen' => 'Toʻliq ekranda boshlash',
+ 			'settings.startInFullscreenDescription' => 'Plezy-ni ochganda toʻliq ekran rejimida ochish',
++			'settings.htpcOptions' => 'HTPC options',
++			'settings.htpcOptionsDescription' => 'Options for home theater PCs and remote controls',
++			'settings.stopVideoOnEscape' => 'Stop video with Esc',
++			'settings.stopVideoOnEscapeDescription' => 'Stop playback and return to the previous screen when Esc is pressed',
+ 			'settings.exitFullscreenOnPlayerClose' => 'Pleyer yopilganda toʻliq ekrandan chiqish',
+ 			'settings.exitFullscreenOnPlayerCloseDescription' => 'Video pleyerni yopganda avtomatik ravishda toʻliq ekrandan chiqish',
+ 			'settings.autoHidePerformanceOverlay' => 'Unumdorlik panelini avto-yashirish',
+diff --git a/lib/i18n/strings_zh.g.dart b/lib/i18n/strings_zh.g.dart
+index 878e462ae..c1b5fabe2 100644
+--- a/lib/i18n/strings_zh.g.dart
++++ b/lib/i18n/strings_zh.g.dart
+@@ -559,6 +559,10 @@ class Translations$settings$zh extends Translations$settings$en {
+ 	@override String get forceTvModeDescription => '强制 TV 布局。适用于无法自动检测的设备。需要重启。';
+ 	@override String get startInFullscreen => '以全屏模式启动';
+ 	@override String get startInFullscreenDescription => '启动时以全屏模式打开 Plezy';
++	@override String get htpcOptions => 'HTPC options';
++	@override String get htpcOptionsDescription => 'Options for home theater PCs and remote controls';
++	@override String get stopVideoOnEscape => 'Stop video with Esc';
++	@override String get stopVideoOnEscapeDescription => 'Stop playback and return to the previous screen when Esc is pressed';
+ 	@override String get exitFullscreenOnPlayerClose => '关闭播放器时退出全屏';
+ 	@override String get exitFullscreenOnPlayerCloseDescription => '关闭视频播放器时自动退出全屏模式';
+ 	@override String get autoHidePerformanceOverlay => '自动隐藏性能叠加层';
+@@ -3830,6 +3834,10 @@ extension on TranslationsZh {
+ 			'settings.forceTvModeDescription' => '强制 TV 布局。适用于无法自动检测的设备。需要重启。',
+ 			'settings.startInFullscreen' => '以全屏模式启动',
+ 			'settings.startInFullscreenDescription' => '启动时以全屏模式打开 Plezy',
++			'settings.htpcOptions' => 'HTPC options',
++			'settings.htpcOptionsDescription' => 'Options for home theater PCs and remote controls',
++			'settings.stopVideoOnEscape' => 'Stop video with Esc',
++			'settings.stopVideoOnEscapeDescription' => 'Stop playback and return to the previous screen when Esc is pressed',
+ 			'settings.exitFullscreenOnPlayerClose' => '关闭播放器时退出全屏',
+ 			'settings.exitFullscreenOnPlayerCloseDescription' => '关闭视频播放器时自动退出全屏模式',
+ 			'settings.autoHidePerformanceOverlay' => '自动隐藏性能叠加层',
+diff --git a/lib/i18n/strings_zh_Hant.g.dart b/lib/i18n/strings_zh_Hant.g.dart
+index f5c529b37..335e70ef8 100644
+--- a/lib/i18n/strings_zh_Hant.g.dart
++++ b/lib/i18n/strings_zh_Hant.g.dart
+@@ -560,6 +560,10 @@ class _Translations$settings$zh_Hant extends Translations$settings$zh {
+ 	@override String get forceTvModeDescription => '強制使用 TV 介面版面。適用於無法自動辨識 TV 的裝置。需要重新啟動。';
+ 	@override String get startInFullscreen => '以全螢幕模式啟動';
+ 	@override String get startInFullscreenDescription => '啟動時直接以全螢幕開啟 Plezy';
++	@override String get htpcOptions => 'HTPC options';
++	@override String get htpcOptionsDescription => 'Options for home theater PCs and remote controls';
++	@override String get stopVideoOnEscape => 'Stop video with Esc';
++	@override String get stopVideoOnEscapeDescription => 'Stop playback and return to the previous screen when Esc is pressed';
+ 	@override String get exitFullscreenOnPlayerClose => '關閉播放器時退出全螢幕';
+ 	@override String get exitFullscreenOnPlayerCloseDescription => '關閉影片播放器時自動退出全螢幕模式';
+ 	@override String get autoHidePerformanceOverlay => '自動隱藏效能疊加層';
+@@ -3831,6 +3835,10 @@ extension on TranslationsZhHant {
+ 			'settings.forceTvModeDescription' => '強制使用 TV 介面版面。適用於無法自動辨識 TV 的裝置。需要重新啟動。',
+ 			'settings.startInFullscreen' => '以全螢幕模式啟動',
+ 			'settings.startInFullscreenDescription' => '啟動時直接以全螢幕開啟 Plezy',
++			'settings.htpcOptions' => 'HTPC options',
++			'settings.htpcOptionsDescription' => 'Options for home theater PCs and remote controls',
++			'settings.stopVideoOnEscape' => 'Stop video with Esc',
++			'settings.stopVideoOnEscapeDescription' => 'Stop playback and return to the previous screen when Esc is pressed',
+ 			'settings.exitFullscreenOnPlayerClose' => '關閉播放器時退出全螢幕',
+ 			'settings.exitFullscreenOnPlayerCloseDescription' => '關閉影片播放器時自動退出全螢幕模式',
+ 			'settings.autoHidePerformanceOverlay' => '自動隱藏效能疊加層',
+diff --git a/lib/i18n/sv.i18n.json b/lib/i18n/sv.i18n.json
+index b96bcdd61..7e7130e00 100644
+--- a/lib/i18n/sv.i18n.json
++++ b/lib/i18n/sv.i18n.json
+@@ -466,6 +466,10 @@
+     "forceTvModeDescription": "Tvinga TV-layout. För enheter som inte upptäcks automatiskt. Kräver omstart.",
+     "startInFullscreen": "Starta i helskärm",
+     "startInFullscreenDescription": "Öppna Plezy i helskärm vid start",
++    "htpcOptions": "HTPC options",
++    "htpcOptionsDescription": "Options for home theater PCs and remote controls",
++    "stopVideoOnEscape": "Stop video with Esc",
++    "stopVideoOnEscapeDescription": "Stop playback and return to the previous screen when Esc is pressed",
+     "exitFullscreenOnPlayerClose": "Avsluta helskärm vid stängning av spelare",
+     "exitFullscreenOnPlayerCloseDescription": "Avslutar automatiskt helskärmsläge när videospelaren stängs",
+     "autoHidePerformanceOverlay": "Dölj prestandainformation automatiskt",
+diff --git a/lib/i18n/tr.i18n.json b/lib/i18n/tr.i18n.json
+index f8293fafc..b016fe932 100644
+--- a/lib/i18n/tr.i18n.json
++++ b/lib/i18n/tr.i18n.json
+@@ -466,6 +466,10 @@
+     "forceTvModeDescription": "TV düzenini zorla. Otomatik algılamayan cihazlar içindir. Yeniden başlatma gerektirir.",
+     "startInFullscreen": "Tam ekranda başlat",
+     "startInFullscreenDescription": "Plezy'yi açılışta tam ekran modunda aç",
++    "htpcOptions": "HTPC options",
++    "htpcOptionsDescription": "Options for home theater PCs and remote controls",
++    "stopVideoOnEscape": "Stop video with Esc",
++    "stopVideoOnEscapeDescription": "Stop playback and return to the previous screen when Esc is pressed",
+     "exitFullscreenOnPlayerClose": "Oynatıcı kapandığında tam ekrandan çık",
+     "exitFullscreenOnPlayerCloseDescription": "Video oynatıcıyı kapatırken otomatik olarak tam ekrandan çık",
+     "autoHidePerformanceOverlay": "Performans Katmanını Otomatik Gizle",
+diff --git a/lib/i18n/uz.i18n.json b/lib/i18n/uz.i18n.json
+index 96fe49aec..21a208e19 100644
+--- a/lib/i18n/uz.i18n.json
++++ b/lib/i18n/uz.i18n.json
+@@ -466,6 +466,10 @@
+     "forceTvModeDescription": "TV interfeysini majburiy yoqish. Avtomatik aniqlanmaydigan qurilmalar uchun. Qayta ishga tushirish talab qilinadi.",
+     "startInFullscreen": "Toʻliq ekranda boshlash",
+     "startInFullscreenDescription": "Plezy-ni ochganda toʻliq ekran rejimida ochish",
++    "htpcOptions": "HTPC options",
++    "htpcOptionsDescription": "Options for home theater PCs and remote controls",
++    "stopVideoOnEscape": "Stop video with Esc",
++    "stopVideoOnEscapeDescription": "Stop playback and return to the previous screen when Esc is pressed",
+     "exitFullscreenOnPlayerClose": "Pleyer yopilganda toʻliq ekrandan chiqish",
+     "exitFullscreenOnPlayerCloseDescription": "Video pleyerni yopganda avtomatik ravishda toʻliq ekrandan chiqish",
+     "autoHidePerformanceOverlay": "Unumdorlik panelini avto-yashirish",
+diff --git a/lib/i18n/zh-Hant.i18n.json b/lib/i18n/zh-Hant.i18n.json
+index afe999063..ac1152b91 100644
+--- a/lib/i18n/zh-Hant.i18n.json
++++ b/lib/i18n/zh-Hant.i18n.json
+@@ -466,6 +466,10 @@
+     "forceTvModeDescription": "強制使用 TV 介面版面。適用於無法自動辨識 TV 的裝置。需要重新啟動。",
+     "startInFullscreen": "以全螢幕模式啟動",
+     "startInFullscreenDescription": "啟動時直接以全螢幕開啟 Plezy",
++    "htpcOptions": "HTPC options",
++    "htpcOptionsDescription": "Options for home theater PCs and remote controls",
++    "stopVideoOnEscape": "Stop video with Esc",
++    "stopVideoOnEscapeDescription": "Stop playback and return to the previous screen when Esc is pressed",
+     "exitFullscreenOnPlayerClose": "關閉播放器時退出全螢幕",
+     "exitFullscreenOnPlayerCloseDescription": "關閉影片播放器時自動退出全螢幕模式",
+     "autoHidePerformanceOverlay": "自動隱藏效能疊加層",
+diff --git a/lib/i18n/zh.i18n.json b/lib/i18n/zh.i18n.json
+index 26fcff8e9..9f9d9ff6c 100644
+--- a/lib/i18n/zh.i18n.json
++++ b/lib/i18n/zh.i18n.json
+@@ -466,6 +466,10 @@
+     "forceTvModeDescription": "强制 TV 布局。适用于无法自动检测的设备。需要重启。",
+     "startInFullscreen": "以全屏模式启动",
+     "startInFullscreenDescription": "启动时以全屏模式打开 Plezy",
++    "htpcOptions": "HTPC options",
++    "htpcOptionsDescription": "Options for home theater PCs and remote controls",
++    "stopVideoOnEscape": "Stop video with Esc",
++    "stopVideoOnEscapeDescription": "Stop playback and return to the previous screen when Esc is pressed",
+     "exitFullscreenOnPlayerClose": "关闭播放器时退出全屏",
+     "exitFullscreenOnPlayerCloseDescription": "关闭视频播放器时自动退出全屏模式",
+     "autoHidePerformanceOverlay": "自动隐藏性能叠加层",
+diff --git a/lib/screens/settings/general_settings_screen.dart b/lib/screens/settings/general_settings_screen.dart
+index d681e4764..f0bd50ef1 100644
+--- a/lib/screens/settings/general_settings_screen.dart
++++ b/lib/screens/settings/general_settings_screen.dart
+@@ -15,6 +15,7 @@ import '../../widgets/focusable_list_tile.dart';
+ import '../../widgets/setting_tile.dart';
+ import '../../widgets/settings_page.dart';
+ import '../../widgets/settings_section.dart';
++import 'htpc_options_settings_screen.dart';
+ import 'settings_utils.dart';
+ 
+ /// App-level preferences that are not about looks or playback: language,
+@@ -53,7 +54,19 @@ class GeneralSettingsScreen extends StatelessWidget {
+           ],
+         ),
+ 
+-        if (PlatformDetector.isDesktopOS())
++        if (Platform.isWindows)
++          SettingsGroup(
++            children: [
++              SettingNavigationTile(
++                icon: Symbols.tv_rounded,
++                title: t.settings.htpcOptions,
++                subtitle: t.settings.htpcOptionsDescription,
++                destinationBuilder: (context) => const HtpcOptionsSettingsScreen(),
++              ),
++            ],
++          ),
++
++        if (PlatformDetector.isDesktopOS() && !Platform.isWindows)
+           SettingsGroup(
+             title: t.settings.window,
+             children: [
+diff --git a/lib/screens/settings/htpc_options_settings_screen.dart b/lib/screens/settings/htpc_options_settings_screen.dart
+new file mode 100644
+index 000000000..b5a98c837
+--- /dev/null
++++ b/lib/screens/settings/htpc_options_settings_screen.dart
+@@ -0,0 +1,40 @@
++import 'package:flutter/material.dart';
++import 'package:material_symbols_icons/symbols.dart';
++
++import '../../i18n/strings.g.dart';
++import '../../services/settings_service.dart';
++import '../../widgets/setting_tile.dart';
++import '../../widgets/settings_page.dart';
++import '../../widgets/settings_section.dart';
++
++/// Windows-only options for remote-first and home theater use.
++class HtpcOptionsSettingsScreen extends StatelessWidget {
++  const HtpcOptionsSettingsScreen({super.key});
++
++  @override
++  Widget build(BuildContext context) {
++    return SettingsPage(
++      title: Text(t.settings.htpcOptions),
++      children: [
++        SettingsGroup(
++          title: t.settings.htpcOptions,
++          children: [
++            SettingSwitchTile(
++              pref: SettingsService.startInFullscreen,
++              icon: Symbols.fullscreen_rounded,
++              title: t.settings.startInFullscreen,
++              subtitle: t.settings.startInFullscreenDescription,
++            ),
++            SettingSwitchTile(
++              pref: SettingsService.stopVideoOnEscape,
++              icon: Symbols.stop_circle_rounded,
++              title: t.settings.stopVideoOnEscape,
++              subtitle: t.settings.stopVideoOnEscapeDescription,
++            ),
++          ],
++        ),
++        const SizedBox(height: 24),
++      ],
++    );
++  }
++}
 diff --git a/lib/screens/video_player_screen.dart b/lib/screens/video_player_screen.dart
-index 28c0956b2..262d082c3 100644
+index 28c0956b2..94306078b 100644
 --- a/lib/screens/video_player_screen.dart
 +++ b/lib/screens/video_player_screen.dart
-@@ -2381,6 +2381,21 @@ class VideoPlayerScreenState extends State<VideoPlayerScreen>
+@@ -2381,6 +2381,23 @@ class VideoPlayerScreenState extends State<VideoPlayerScreen>
          return;
        }
      }
 +
 +    // A Windows Escape is an immediate playback exit. Let player prompts keep
 +    // their normal dismiss/back behavior before bypassing fullscreen and chrome.
-+    if (Platform.isWindows && navigationKey == PlayerNavigationKey.physicalEscape) {
++    if (Platform.isWindows &&
++        navigationKey == PlayerNavigationKey.physicalEscape &&
++        SettingsService.instance.read(SettingsService.stopVideoOnEscape)) {
 +      if (_episode.showPlayNextDialog || _showStillWatchingPrompt) {
 +        _playerNavigationCoordinator.handle(navigationKey);
 +        return;
@@ -24,17 +1007,47 @@ index 28c0956b2..262d082c3 100644
      _playerNavigationCoordinator.handle(navigationKey);
    }
  
+diff --git a/lib/services/settings_service.dart b/lib/services/settings_service.dart
+index 11a409072..9ce8d1f4f 100644
+--- a/lib/services/settings_service.dart
++++ b/lib/services/settings_service.dart
+@@ -1006,7 +1006,12 @@ class SettingsService extends BaseSharedPreferencesService {
+     'enable_companion_remote_server',
+     defaultValueProvider: PlatformDetector.isDesktopOS,
+   );
+-  static const startInFullscreen = BoolPref('start_in_fullscreen');
++  static bool _windowsFullscreenDefault() => Platform.isWindows;
++  static const startInFullscreen = BoolPref(
++    'start_in_fullscreen',
++    defaultValueProvider: _windowsFullscreenDefault,
++  );
++  static const stopVideoOnEscape = BoolPref('stop_video_on_escape');
+   static const exitFullscreenOnPlayerClose = BoolPref('exit_fullscreen_on_player_close');
+ 
+   static const playbackBufferTier = EnumPref<PlaybackBufferTier>(
+@@ -1622,6 +1627,7 @@ class SettingsService extends BaseSharedPreferencesService {
+     displaySwitchDelay,
+     enableCompanionRemoteServer,
+     startInFullscreen,
++    stopVideoOnEscape,
+     exitFullscreenOnPlayerClose,
+   ];
+ 
 diff --git a/lib/widgets/video_controls/parts/key_events.dart b/lib/widgets/video_controls/parts/key_events.dart
-index b0afe3864..55a2383d7 100644
+index b0afe3864..c583239ab 100644
 --- a/lib/widgets/video_controls/parts/key_events.dart
 +++ b/lib/widgets/video_controls/parts/key_events.dart
-@@ -92,6 +92,11 @@ extension _PlexVideoControlsKeyEventMethods on _PlexVideoControlsState {
+@@ -92,6 +92,15 @@ extension _PlexVideoControlsKeyEventMethods on _PlexVideoControlsState {
        return handlePlayerNavigationKeyAction(event, navigationKey, sheetController!.pop);
      }
  
 +    // Windows physical Escape is handled by the screen so it can stop playback
 +    // without stepping through player chrome. Sheets above still dismiss first.
-+    if (Platform.isWindows && navigationKey == PlayerNavigationKey.physicalEscape) {
++    if (Platform.isWindows &&
++        navigationKey == PlayerNavigationKey.physicalEscape &&
++        !widget.playbackPromptOpen &&
++        !_isSkipMarkerButtonVisible &&
++        SettingsService.instance.read(SettingsService.stopVideoOnEscape)) {
 +      return KeyEventResult.ignored;
 +    }
      if (widget.chromeController.contentStripVisible) {
