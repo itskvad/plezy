@@ -900,6 +900,41 @@ index 26fcff8e9..9f9d9ff6c 100644
      "exitFullscreenOnPlayerClose": "关闭播放器时退出全屏",
      "exitFullscreenOnPlayerCloseDescription": "关闭视频播放器时自动退出全屏模式",
      "autoHidePerformanceOverlay": "自动隐藏性能叠加层",
+diff --git a/lib/screens/main_screen.dart b/lib/screens/main_screen.dart
+index 84dda9750..c488624e3 100644
+--- a/lib/screens/main_screen.dart
++++ b/lib/screens/main_screen.dart
+@@ -1595,13 +1595,12 @@ class _MainScreenState extends State<MainScreen>
+     return KeyEventResult.handled;
+   }
+ 
+-  /// Desktop physical-keyboard Escape at root Home is reserved for leaving
+-  /// window fullscreen; it never arms the press-back-again quit, so an Escape
+-  /// aimed at fullscreen can't close the app (#1748). In TV mode Escape is the
+-  /// remote's Back and keeps the double-press exit path, as do gamepad B,
+-  /// companion-remote back, and system back. On macOS this also keeps player
+-  /// Escape away from native fullscreen, which is window state shared by
+-  /// every route.
++  /// Desktop physical-keyboard Escape at root Home is reserved for fullscreen
++  /// handling; it never arms the press-back-again quit (#1748). Windows HTPC
++  /// builds consume it without leaving fullscreen. Other desktop platforms
++  /// leave fullscreen on Escape. In TV mode Escape is remote Back and keeps
++  /// the double-press exit path, as do gamepad B, companion-remote back, and
++  /// system back.
+   KeyEventResult _handleDesktopRootEscape(KeyEvent event) {
+     final tabs = _getVisibleTabs(_isOffline);
+     final shouldHandle = shouldHandleDesktopRootEscape(
+@@ -1616,7 +1615,9 @@ class _MainScreenState extends State<MainScreen>
+ 
+     if (event is KeyUpEvent) {
+       BackKeyCoordinator.markHandled();
+-      unawaited(FullscreenStateManager().exitFullscreenIfActive());
++      if (!Platform.isWindows) {
++        unawaited(FullscreenStateManager().exitFullscreenIfActive());
++      }
+     }
+     return event is KeyDownEvent || event is KeyRepeatEvent || event is KeyUpEvent
+         ? KeyEventResult.handled
 diff --git a/lib/screens/settings/general_settings_screen.dart b/lib/screens/settings/general_settings_screen.dart
 index d681e4764..f0bd50ef1 100644
 --- a/lib/screens/settings/general_settings_screen.dart
@@ -980,10 +1015,29 @@ index 000000000..b5a98c837
 +  }
 +}
 diff --git a/lib/screens/video_player_screen.dart b/lib/screens/video_player_screen.dart
-index 28c0956b2..94306078b 100644
+index 28c0956b2..025f93d4b 100644
 --- a/lib/screens/video_player_screen.dart
 +++ b/lib/screens/video_player_screen.dart
-@@ -2381,6 +2381,23 @@ class VideoPlayerScreenState extends State<VideoPlayerScreen>
+@@ -1405,11 +1405,13 @@ class VideoPlayerScreenState extends State<VideoPlayerScreen>
+       // was already fullscreen before the player opened — that fullscreen is
+       // the app's (start-in-fullscreen, or a toggle from the browse UI) and
+       // Escape is plain Back (#1624).
+-      physicalEscapeExitsFullscreen: () => shouldPhysicalEscapeExitFullscreen(
+-        isMacOS: Platform.isMacOS,
+-        videoPlayerNavigationEnabled: videoPlayerNavigationPreference(),
+-        playerEnteredFullscreen: FullscreenStateManager().scopeOwnsFullscreen,
+-      ),
++      physicalEscapeExitsFullscreen: () =>
++          !Platform.isWindows &&
++          shouldPhysicalEscapeExitFullscreen(
++            isMacOS: Platform.isMacOS,
++            videoPlayerNavigationEnabled: videoPlayerNavigationPreference(),
++            playerEnteredFullscreen: FullscreenStateManager().scopeOwnsFullscreen,
++          ),
+       exitPlayer: () => unawaited(_handleBackButton()),
+       navigateHome: _handleHomeButton,
+       isActive: () => mounted,
+@@ -2381,6 +2383,28 @@ class VideoPlayerScreenState extends State<VideoPlayerScreen>
          return;
        }
      }
@@ -1004,6 +1058,11 @@ index 28c0956b2..94306078b 100644
 +      return;
 +    }
 +
++    // In HTPC use, physical Escape navigates the player without dropping the
++    // app window's fullscreen state, even when closing the player route.
++    if (Platform.isWindows && navigationKey == PlayerNavigationKey.physicalEscape) {
++      _exitFullscreenOnPlayerClose = false;
++    }
      _playerNavigationCoordinator.handle(navigationKey);
    }
  
