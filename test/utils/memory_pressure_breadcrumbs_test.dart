@@ -100,9 +100,9 @@ void main() {
     final data = Map<String, dynamic>.of(breadcrumb.data!);
     final rssMb = data.remove('rssMb') as int;
     final maxRssMb = data.remove('maxRssMb') as int;
+    // currentRss and maxRss read separate OS counters, and the peak can trail
+    // the current value: CI's Linux runner reported rssMb=386, maxRssMb=385.
     expect(rssMb, greaterThan(0));
-    // RSS and peak RSS are live process samples; the process can grow between
-    // the two reads, so this telemetry pair is not an atomic ordering check.
     expect(maxRssMb, greaterThan(0));
     expect(data, {
       'imageCacheMb': 6,
