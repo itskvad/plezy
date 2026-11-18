@@ -72,7 +72,7 @@ jobs:
               echo "Allowing the Windows-only artifact build on the approved sync branch."
               exit 0
             fi
-  
+
             echo "Builds may run from refs/heads/main; the approved sync branch is limited to an artifact-only Windows build." >&2
             exit 1
           fi
