@@ -61,23 +61,21 @@ jobs:
           BUILD_LINUX: ${{ inputs.build_linux }}
         shell: bash
         run: |
-          if [[ "$GITHUB_REF" == "refs/heads/main" ]]; then
-            exit 0
+          if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
+            if [[ "$GITHUB_REF" == "refs/heads/codex/sync-upstream-2026-11-18" \
+              && -z "$RELEASE_TAG" \
+              && "$BUILD_ANDROID" == "false" \
+              && "$BUILD_IOS" == "false" \
+              && "$BUILD_MACOS" == "false" \
+              && "$BUILD_WINDOWS" == "true" \
+              && "$BUILD_LINUX" == "false" ]]; then
+              echo "Allowing the Windows-only artifact build on the approved sync branch."
+              exit 0
+            fi
+  
+            echo "Builds may run from refs/heads/main; the approved sync branch is limited to an artifact-only Windows build." >&2
+            exit 1
           fi
-
-          if [[ "$GITHUB_REF" == "refs/heads/codex/sync-upstream-2026-11-18" \
-            && -z "$RELEASE_TAG" \
-            && "$BUILD_ANDROID" == "false" \
-            && "$BUILD_IOS" == "false" \
-            && "$BUILD_MACOS" == "false" \
-            && "$BUILD_WINDOWS" == "true" \
-            && "$BUILD_LINUX" == "false" ]]; then
-            echo "Allowing the Windows-only artifact build on the approved sync branch."
-            exit 0
-          fi
-
-          echo "Builds may run from refs/heads/main; the approved sync branch is limited to an artifact-only Windows build." >&2
-          exit 1
 
   build-android:
     needs: validate-trusted-ref
